@@ -8,22 +8,47 @@ import java.util.Scanner;
 
 public class World {
     public static void main(String[] args) {
+        //lab3
+        Animal animal = new Animal();
+        System.out.println(animal.toString());
+
+        //Sprawdzanie poprawnosci funkcji move
+        animal.move(MoveDirection.RIGHT);
+        animal.move(MoveDirection.FORWARD);
+        animal.move(MoveDirection.FORWARD);
+        animal.move(MoveDirection.FORWARD);
+        System.out.println(animal.toString());
+
+        //Poruszanie zwierzeciem za pomoca klasy OptionsParser
+        //1 krok: uzytkownik podaje kierunki f b r l forward backward right left
+        //2 krok: parser majac liste wpisanych kierunkow porusza zwierzeciem za pomoca metody Animal.move
+        OptionsParser proba = new OptionsParser();
+        String[] animalMovements = proba.parser(args);
+
+        for(int i=0; i<animalMovements.length ;i++){
+            animal.move(MoveDirection.valueOf(animalMovements[i]));
+            System.out.println(animal.toString());
+        }
+        //TESTY DO ZNALEZIENIA W KLASIE AnimalMoveTest!!!
+
+
+        //lab2
         //test metod z Vector2d
-        Vector2d position1 = new Vector2d(1,2);
-        System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2,1);
-        System.out.println(position2);
-        System.out.println(position1.add(position2));
+        //Vector2d position1 = new Vector2d(1,2);
+        //System.out.println(position1);
+        //Vector2d position2 = new Vector2d(-2,1);
+        //System.out.println(position2);
+        //System.out.println(position1.add(position2));
 
         //uzycie metody next() z enum MapDirection
-        MapDirection direction = MapDirection.valueOf("NORTH");
-        String nextDirection = direction.next();
-        MapDirection direction2 = MapDirection.valueOf(nextDirection);
+        //MapDirection direction = MapDirection.valueOf("NORTH");
+        //String nextDirection = direction.next();
+        //MapDirection direction2 = MapDirection.valueOf(nextDirection);
         //System.out.println(direction2);
 
         //uzycie metody toUnitVector() z enum MapDirection
-        MapDirection direction3 = MapDirection.valueOf("SOUTH");
-        Vector2d position3 = direction3.toUnitVector();
+        //MapDirection direction3 = MapDirection.valueOf("SOUTH");
+        //Vector2d position3 = direction3.toUnitVector();
         //System.out.println(position3);
 
         //lab1
@@ -73,7 +98,6 @@ public class World {
         System.out.println("Podaj kierunki w jakich zwierzak ma isc: ");
         Scanner input = new Scanner(System.in);
         String str = input.nextLine();
-        //String str = "fbrrlnsnsj";
         String[] directions = str.split("");
 
         //Tworze nowa tablice directionsSorted z samymi f b r l

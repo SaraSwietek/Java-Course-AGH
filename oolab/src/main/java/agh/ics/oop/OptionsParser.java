@@ -2,7 +2,7 @@ package agh.ics.oop;
 import java.util.Scanner;
 
 public class OptionsParser {
-    public static String[] parser(String[] args) {
+    public static String[] parse(String[] args) {
 
         String[] givenDirections = parserGiveDirections(args);
         return givenDirections;

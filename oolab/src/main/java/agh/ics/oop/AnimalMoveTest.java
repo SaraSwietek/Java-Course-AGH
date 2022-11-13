@@ -4,7 +4,9 @@ import org.testng.annotations.Test;
 
 public class AnimalMoveTest {
 
+
     //Czy zwierze zwraca sie w odpowiednie kierunki?
+    /*
     @Test
     void orientationTest() {
         Animal animal = new Animal();
@@ -40,7 +42,7 @@ public class AnimalMoveTest {
         int y = animal.getY();
         AssertJUnit.assertTrue(x==2);
         AssertJUnit.assertTrue(y==0);
-    }
+    }*/
 
 }
 

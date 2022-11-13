@@ -8,15 +8,31 @@ import java.util.Scanner;
 
 public class World {
     public static void main(String[] args) {
-        //lab3
+
+        //lab4
+
+        String[] directions = new OptionsParser().parse(args);
+        RectangularMap map = new RectangularMap(10, 5);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, map, positions);
+        engine.run();
+        //System.out.println(engine.getAnimals());
+        System.out.println(map.toString());
+        //dla f b r l f f r r f f f f f f f f poprawnie
+        //testow prosze nie szukac - niestety nie zdazylam
+
+
+
+        /*//lab3
         Animal animal = new Animal();
+        RectangularMap map = new RectangularMap(5, 5);
         System.out.println(animal.toString());
 
         //Sprawdzanie poprawnosci funkcji move
-        animal.move(MoveDirection.RIGHT);
-        animal.move(MoveDirection.FORWARD);
-        animal.move(MoveDirection.FORWARD);
-        animal.move(MoveDirection.FORWARD);
+        animal.move(MoveDirection.RIGHT, map);
+        animal.move(MoveDirection.FORWARD, map);
+        animal.move(MoveDirection.FORWARD, map);
+        animal.move(MoveDirection.FORWARD, map);
         System.out.println(animal.toString());
 
         //Poruszanie zwierzeciem za pomoca klasy OptionsParser
@@ -26,11 +42,11 @@ public class World {
         String[] animalMovements = proba.parser(args);
 
         for(int i=0; i<animalMovements.length ;i++){
-            animal.move(MoveDirection.valueOf(animalMovements[i]));
+            animal.move(MoveDirection.valueOf(animalMovements[i]), map);
             System.out.println(animal.toString());
         }
         //TESTY DO ZNALEZIENIA W KLASIE AnimalMoveTest!!!
-
+        */
 
         //lab2
         //test metod z Vector2d
@@ -142,9 +158,8 @@ public class World {
         //zwracam tablice z samymi FORWARD BACKWARD RIGHT LEFT
         return changeString;
 
-        }
-
-
-
     }
 
+
+
+}

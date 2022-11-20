@@ -9,20 +9,34 @@ import java.util.Scanner;
 public class World {
     public static void main(String[] args) {
 
-        //lab4
+        //lab5
+
+        //TESTY W RectangularMapTest i GrassFieldTest!
 
         String[] directions = new OptionsParser().parse(args);
-        RectangularMap map = new RectangularMap(10, 5);
+        IWorldMap map = new GrassField(10);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         IEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
-        //System.out.println(engine.getAnimals());
+        System.out.println(engine.getAnimals());
+        System.out.println(map.toString());
+
+
+        //IWorldMap map = new GrassField(10);
+
+        //System.out.println(((GrassField) map).generateRandom(20));
+
+        //lab4
+/*
+        String[] directions = new OptionsParser().parse(args);
+        IWorldMap map = new RectangularMap(10, 5);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, (RectangularMap) map, positions);
+        engine.run();
+        System.out.println(engine.getAnimals());
         System.out.println(map.toString());
         //dla f b r l f f r r f f f f f f f f poprawnie
-        //testow prosze nie szukac - niestety nie zdazylam
-
-
-
+*/
         /*//lab3
         Animal animal = new Animal();
         RectangularMap map = new RectangularMap(5, 5);

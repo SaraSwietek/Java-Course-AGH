@@ -6,11 +6,11 @@ import java.util.List;
 public class SimulationEngine implements IEngine {
 
     private String[] directions;
-    private RectangularMap map;
+    private IWorldMap map;
     private Vector2d[] positions;
     private List<Animal> animals = new ArrayList<Animal>();
 
-    public SimulationEngine(String[] givenDirections, RectangularMap map, Vector2d[] positions) {
+    public SimulationEngine(String[] givenDirections, IWorldMap map, Vector2d[] positions) {
         this.directions = givenDirections;
         this.map = map;
         this.positions = positions;
@@ -20,6 +20,7 @@ public class SimulationEngine implements IEngine {
             if(map.place(animal)) {
                 animals.add(animal);
             }
+
         }
 
     }

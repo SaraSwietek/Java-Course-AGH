@@ -3,10 +3,10 @@ package agh.ics.oop;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RectangularMap implements IWorldMap{
+public class RectangularMap extends AbstractWorldMap{
     private int width = 5;
     private int height = 5;
-    public List<Animal> animals = new ArrayList<>();
+    //public List<Animal> animals = new ArrayList<>();
 
     public RectangularMap(int width, int height) {
         this.width = width;
@@ -39,9 +39,13 @@ public class RectangularMap implements IWorldMap{
     public boolean place(Animal animal) {
         if (isOccupied(animal.getPosition()))
             return false;
-        animals.add(animal); //array do sprawdzania czy inny zwierzak znajduje sie na danym miejscu
+        if (!canMoveTo(animal.getPosition()))
+            return false;
+        animals.add(animal);
         return true;
     }
+
+/*
 
     @Override
     public boolean isOccupied(Vector2d position) {
@@ -59,8 +63,9 @@ public class RectangularMap implements IWorldMap{
                 return i;
         }
         return null;
-    }
+    }*/
 
+    @Override
     public String toString(){
         MapVisualizer map = new MapVisualizer(this);
         return map.draw(new Vector2d(0,0),new Vector2d(width, height));

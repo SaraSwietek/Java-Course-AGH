@@ -2,12 +2,11 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class GrassField extends AbstractWorldMap{
 
     private int grassCount;
-    //public List<Animal> animals = new ArrayList<>();
-    //public List<Grass> grassBlades = new ArrayList<>();
 
     public GrassField(int grassCount) {
         this.grassCount = grassCount;
@@ -15,7 +14,7 @@ public class GrassField extends AbstractWorldMap{
         while (grassBlades.size() < grassCount){
             Vector2d positionGrass = randomPositionGrass(grassCount);
             if (!isOccupied(positionGrass)){
-                grassBlades.add(new Grass(positionGrass));
+                grassBlades.put(positionGrass, new Grass(positionGrass));
             }
         }
     }
@@ -34,79 +33,32 @@ public class GrassField extends AbstractWorldMap{
         return true;
     }
 
-    /*@Override
-    public boolean place(Animal animal) {
-        if (isOccupiedByGrass(animal.getPosition())) {
-            animals.add(animal);
-            return true; } //zwierzak ma priorytet nad trawa
-        if (isOccupied(animal.getPosition()))
-            return false;
-        animals.add(animal); //array do sprawdzania czy inny zwierzak znajduje sie na danym miejscu
-        return true;
-    }*/
-/*
-    @Override
-    public boolean place(Animal animal) {
-        if (!(objectAt(animal.getPosition()) instanceof Animal)){
-            animals.add(animal);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        for (Animal i : animals){
-            if (i.getPosition().equals(position))
-                return true;
-        }
-        for (Grass i : grassBlades){
-            if (i.getPosition().equals(position))
-                return true;
-        }
-        return false;
-    }
-
-    /*public boolean isOccupiedByGrass(Vector2d position) {
-        for (Grass i : grassBlades){
-            if (i.getPosition().equals(position))
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public Object objectAt(Vector2d position) {
-        for (Animal i :animals) {
-            if (i.getPosition().equals(position))
-                return i;
-        }
-        for (Grass i :grassBlades) {
-            if (i.getPosition().equals(position))
-                return i;
-        }
-        return null;
-    }*/
 
     //obliczam na jakich skrajnych czesciach mapy znajduja sie obiekty
     public Vector2d searchLowerLeft(){
         Vector2d lowLeft = new Vector2d(0,0);
-        for (Animal animal : animals) {
-            lowLeft = lowLeft.lowerLeft(animal.getPosition()); //korzyszam z funkcji lowerLeft w klasie Vector2d
+        Set<Vector2d> animalsSet = this.animals.keySet();
+        Set<Vector2d> grassSet = this.grassBlades.keySet();
+
+        for (Vector2d vector2d : animalsSet) {
+            lowLeft = lowLeft.lowerLeft(vector2d); //korzystam z funkcji lowerLeft w klasie Vector2d
         }
-        for (Grass grass : grassBlades) {
-            lowLeft = lowLeft.lowerLeft(grass.getPosition());
+        for (Vector2d vector2d : grassSet) {
+            lowLeft = lowLeft.lowerLeft(vector2d);
         }
         return lowLeft;
     }
 
     public Vector2d searchUpperRight(){
         Vector2d topRight = new Vector2d(0,0);
-        for (Animal animal : animals) {
-            topRight = topRight.upperRight(animal.getPosition()); //korzyszam z funkcji upperRight w klasie Vector2d
+        Set<Vector2d> animalsSet = this.animals.keySet();
+        Set<Vector2d> grassSet = this.grassBlades.keySet();
+
+        for (Vector2d vector2d : animalsSet) {
+            topRight = topRight.upperRight(vector2d); //korzystam z funkcji upperRight w klasie Vector2d
         }
-        for (Grass grass : grassBlades) {
-            topRight = topRight.upperRight(grass.getPosition());
+        for (Vector2d vector2d : grassSet) {
+            topRight = topRight.upperRight(vector2d);
         }
         return topRight;
     }

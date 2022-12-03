@@ -34,7 +34,7 @@ public class RectangularMap extends AbstractWorldMap{
 
         return true;
     }
-
+/*
     @Override
     public boolean place(Animal animal) {
         if (isOccupied(animal.getPosition()))
@@ -42,29 +42,11 @@ public class RectangularMap extends AbstractWorldMap{
         if (!canMoveTo(animal.getPosition()))
             return false;
         animals.add(animal);
+        //Vector2d positioon = animal.getPosition();
+        //animals.put(positioon, new Animal(positioon, map));
         return true;
     }
-
-/*
-
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        for (Animal i : animals){
-            if (i.getPosition().equals(position))
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public Object objectAt(Vector2d position) {
-        for (Animal i :animals) {
-            if (i.getPosition().equals(position))
-                return i;
-        }
-        return null;
-    }*/
-
+*/
     @Override
     public String toString(){
         MapVisualizer map = new MapVisualizer(this);

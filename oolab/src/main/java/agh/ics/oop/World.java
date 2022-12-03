@@ -9,9 +9,7 @@ import java.util.Scanner;
 public class World {
     public static void main(String[] args) {
 
-        //lab5
-
-        //TESTY W RectangularMapTest i GrassFieldTest!
+        //lab6
 
         String[] directions = new OptionsParser().parse(args);
         IWorldMap map = new GrassField(10);
@@ -19,7 +17,7 @@ public class World {
         IEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
         System.out.println(engine.getAnimals());
-        System.out.println(map.toString());
+        System.out.println(map);
 
 
         //IWorldMap map = new GrassField(10);

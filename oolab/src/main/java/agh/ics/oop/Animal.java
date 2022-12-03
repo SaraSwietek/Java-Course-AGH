@@ -1,5 +1,8 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Animal {
 
     //private MapDirection dir = MapDirection.NORTH;
@@ -11,22 +14,27 @@ public class Animal {
     private Vector2d position;
     private IWorldMap map;
 
+    private List<IPositionChangeObserver> observers = new ArrayList<>();
+
     public Animal(){
         this.orientation = MapDirection.NORTH;
         this.position = new Vector2d(2,2);
         this.map = new RectangularMap(5,5);
+        addObserver((IPositionChangeObserver) map);
     }
 
     public Animal(IWorldMap map){
         this.orientation = MapDirection.NORTH;
         this.position = new Vector2d(2,2);
         this.map = map;
+        addObserver((IPositionChangeObserver) map);
     }
 
     public Animal(Vector2d position, IWorldMap map) {
         this.orientation = MapDirection.NORTH;
         this.position = position;
         this.map = map;
+        addObserver((IPositionChangeObserver) map);
     }
 
     @Override
@@ -39,12 +47,12 @@ public class Animal {
         }
         return "Zly kierunek";
     }
-
-   /* @Override
+/*
+    @Override
     public String toString() {
         return "polozenie: %s, orientacja: %s,xy: (%s,%s)".formatted(position,orientation,position.x,position.y);
-    }*/
-
+    }
+*/
     boolean isAt(Vector2d position){
         if (position.x==this.position.x && position.y==this.position.y){
             return true;
@@ -68,6 +76,7 @@ public class Animal {
             int yNew = this.position.y;
 
             if (map.canMoveTo(new Vector2d(xNew+=position_change.x,yNew+=position_change.y))){
+                positionChanged(this.position, new Vector2d(xNew,yNew));
                 this.position = new Vector2d(xNew,yNew);
             }
 
@@ -79,6 +88,7 @@ public class Animal {
             int yNew = this.position.y;
 
             if (map.canMoveTo(new Vector2d(xNew-=position_change.x,yNew-=position_change.y))){
+                positionChanged(this.position, new Vector2d(xNew,yNew));
                 this.position = new Vector2d(xNew,yNew);
             }
 
@@ -102,6 +112,19 @@ public class Animal {
 
     public Vector2d getPosition() {
         return position;
+    }
+
+    void addObserver(IPositionChangeObserver observer) {
+        observers.add(observer);
+    }
+    void removeObserver(IPositionChangeObserver observer) {
+        observers.remove(observer);
+    }
+
+    void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+        for (IPositionChangeObserver observer : observers){
+            observer.positionChanged(oldPosition, newPosition);
+        }
     }
 
 }

@@ -19,11 +19,13 @@ public class SimulationEngine implements IEngine {
             Animal animal = new Animal(position, map);
             if(map.place(animal)) {
                 animals.add(animal);
+
             }
 
         }
 
     }
+
 
     @Override
     public void run() {
@@ -32,6 +34,7 @@ public class SimulationEngine implements IEngine {
         }
         System.out.println(animals);
     }
+
 
     public List<Animal> getAnimals() {
         return animals;

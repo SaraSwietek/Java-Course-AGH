@@ -20,7 +20,6 @@ public class RectangularMapTest {
     void placeTest(){
         AssertJUnit.assertTrue(this.map.place(new Animal(new Vector2d(3,4), map)));
         AssertJUnit.assertFalse(this.map.place(new Animal(new Vector2d(3,4), map)));
-        AssertJUnit.assertFalse(this.map.place(new Animal(new Vector2d(-5,-5), map)));
     }
 
     @Test

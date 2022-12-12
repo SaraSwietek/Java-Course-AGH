@@ -15,6 +15,7 @@ public class GrassField extends AbstractWorldMap{
             Vector2d positionGrass = randomPositionGrass(grassCount);
             if (!isOccupied(positionGrass)){
                 grassBlades.put(positionGrass, new Grass(positionGrass));
+                this.boundary.addPosition(positionGrass);
             }
         }
     }
@@ -36,31 +37,11 @@ public class GrassField extends AbstractWorldMap{
 
     //obliczam na jakich skrajnych czesciach mapy znajduja sie obiekty
     public Vector2d searchLowerLeft(){
-        Vector2d lowLeft = new Vector2d(0,0);
-        Set<Vector2d> animalsSet = this.animals.keySet();
-        Set<Vector2d> grassSet = this.grassBlades.keySet();
-
-        for (Vector2d vector2d : animalsSet) {
-            lowLeft = lowLeft.lowerLeft(vector2d); //korzystam z funkcji lowerLeft w klasie Vector2d
-        }
-        for (Vector2d vector2d : grassSet) {
-            lowLeft = lowLeft.lowerLeft(vector2d);
-        }
-        return lowLeft;
+        return boundary.getLowerLeft(); //MapBoundary ustala wielkosc mapy
     }
 
     public Vector2d searchUpperRight(){
-        Vector2d topRight = new Vector2d(0,0);
-        Set<Vector2d> animalsSet = this.animals.keySet();
-        Set<Vector2d> grassSet = this.grassBlades.keySet();
-
-        for (Vector2d vector2d : animalsSet) {
-            topRight = topRight.upperRight(vector2d); //korzystam z funkcji upperRight w klasie Vector2d
-        }
-        for (Vector2d vector2d : grassSet) {
-            topRight = topRight.upperRight(vector2d);
-        }
-        return topRight;
+        return boundary.getUpperRight(); //MapBoundary ustala wielkosc mapy
     }
 
     @Override

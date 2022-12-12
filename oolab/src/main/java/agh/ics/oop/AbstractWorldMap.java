@@ -5,6 +5,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     public Map<Vector2d, Animal> animals = new HashMap<>();
     public Map<Vector2d, Grass> grassBlades = new HashMap<>();
+    MapBoundary boundary = new MapBoundary();
 
     @Override
     public Object objectAt(Vector2d position) {
@@ -19,12 +20,13 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
 
     @Override
-    public boolean place(Animal animal) {
+    public boolean place(Animal animal) throws IllegalArgumentException{
         if (!(objectAt(animal.getPosition()) instanceof Animal)){
             animals.put(animal.getPosition(), animal); //put(key, value)
+            boundary.addPosition(animal.getPosition());
             return true;
         }
-        return false;
+        throw new IllegalArgumentException(animal.getPosition() + " zajete przez inne zwierze!");
     }
 
     @Override
@@ -43,6 +45,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         if(!newPosition.equals(oldPosition)) {
             Animal a = animals.remove(oldPosition);
             animals.put(newPosition, a);
+            boundary.positionChanged(oldPosition, newPosition);
         }
     }
 

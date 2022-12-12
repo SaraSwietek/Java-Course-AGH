@@ -19,14 +19,11 @@ public class SimulationEngine implements IEngine {
             Animal animal = new Animal(position, map);
             if(map.place(animal)) {
                 animals.add(animal);
-
             }
 
         }
 
     }
-
-
     @Override
     public void run() {
         for (int i = 0; i < directions.length; i++) {

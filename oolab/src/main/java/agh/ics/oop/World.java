@@ -32,7 +32,7 @@ public class World {
             System.out.printf(String.valueOf(ex));
         }
 
-        //Application.launch(App.class, args);
+        Application.launch(App.class, args);
 
 
     }

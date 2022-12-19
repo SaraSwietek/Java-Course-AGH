@@ -9,7 +9,8 @@ public class Animal extends Simulator{
     protected int children;
     protected Genotype gene;
     protected Vector2d position;
-    protected int currentGene;
+    protected int currentGene; //?
+    //dzien smierci?
 
 
     public Animal(){
@@ -27,7 +28,7 @@ public class Animal extends Simulator{
         this.days = 0;
         this.children = 0;
         this.position = parent1.getPosition();
-        //podzial energii probny
+        //podzial energii probny ??
         this.energy = parent1.getEnergy() / 4 + parent2.getEnergy() / 4;
         this.gene = new Genotype(parent1, parent2);
         this.currentGene = 0;

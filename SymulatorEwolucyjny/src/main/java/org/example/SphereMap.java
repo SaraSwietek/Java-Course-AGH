@@ -10,7 +10,7 @@ package org.example;
 public class SphereMap {
     protected static final int HEIGHT = 10;
     protected static final int WIDTH = 10;
-
+//orientacja na pryeciwna
     public Vector2d moveTo(Vector2d position) {
         if (position.x >= WIDTH) return new Vector2d(0, position.y);
         if (position.y >= HEIGHT) return new Vector2d(position.x, HEIGHT);

@@ -9,7 +9,7 @@ public class Simulator {
     protected int day = 0;
 
     protected List<Animal> animals = new ArrayList<Animal>();
-    protected List<Grass> grass = new ArrayList<Grass>();
+    protected List<Grass> grasses = new ArrayList<Grass>();
 
     private final Random generator = new Random();
 
@@ -73,7 +73,7 @@ public class Simulator {
 
                 Grass sampleGrass = new Grass(map, new Vector2d(x, y));
                 if (map.placeGrass(sampleGrass)) {
-                    this.grass.add(sampleGrass);
+                    this.grasses.add(sampleGrass);
                     i++;
                 }
             }
@@ -93,5 +93,9 @@ public class Simulator {
             //animal decreasing energy
             this.day++;
         }
+    }
+
+    public List<Grass> getGrasses(){
+        return this.grasses;
     }
 }

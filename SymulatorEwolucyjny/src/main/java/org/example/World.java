@@ -17,9 +17,10 @@ public class World {
         System.out.println(pet3.getGenotype());
         System.out.println(pet3.getGenotypeInt());
 
-        Grass grass1 = new Grass(map, new Vector2d(2,2));
-        Grass grass2 = new Grass(map, new Vector2d(2,2));
 
+        //Simulator simulator = new Simulator();
+        //simulator.addRandomGrass(map,10);
+        //System.out.println(simulator.getGrasses());
 
         //Application.launch(App.class, args);
 

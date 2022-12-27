@@ -34,6 +34,14 @@ public class SphereMap extends AbstractWorld{
 
     @Override
     public boolean isOccupied(Vector2d position) {
+
+        if (animals.containsKey(position))
+            return true;
+
+        if (grasses.containsKey(position))
+            return true;
+
         return false;
     }
+
 }

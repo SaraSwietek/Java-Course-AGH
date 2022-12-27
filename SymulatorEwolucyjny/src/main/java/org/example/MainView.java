@@ -12,7 +12,7 @@ public class MainView extends VBox {
     private Button stepButton;
     private Canvas canvas;
     private SphereMap sphereMap;
-    public Animal pet1;
+    private Grass grass;
     private Affine affine;
 
     public MainView() {
@@ -21,9 +21,9 @@ public class MainView extends VBox {
 
         this.getChildren().addAll(this.stepButton, this.canvas);
 
-        //this.sphereMap = new SphereMap();
+        this.sphereMap = new SphereMap(10,10);
 
-        //this.pet1 = new Animal();
+        this.grass = new Grass(sphereMap,new Vector2d(2,2));
 
         this.affine = new Affine();
         this.affine.appendScale(40, 40);
@@ -37,16 +37,14 @@ public class MainView extends VBox {
         g.setFill(Color.BROWN);
         g.fillRect(0, 0, 400, 400);
 
-        //for (int x = 0; x<this.sphereMap.WIDTH; x++){
-        //  for (int y = 0; y < this.sphereMap.HEIGHT; y++) {
-        //    if(this.pet1.getPosition().equals(new Vector2d(x,y))) {
-        //      g.setFill(Color.BLACK);
-        //    g.fillRect(x,y,1,1);
-        //}
-
-        //else{
-        //  g.setFill(Color.GREEN);
-        //g.fillRect(x,y,1, 1);
-    }
-}
-
+        for (int x = 0; x<this.sphereMap.width; x++) {
+            for (int y = 0; y < this.sphereMap.height; y++) {
+                if (this.grass.getPosition().equals(new Vector2d(x, y))) {
+                    g.setFill(Color.BLACK);
+                    g.fillRect(x, y, 1, 1);
+                } else {
+                    g.setFill(Color.GREEN);
+                    g.fillRect(x, y, 1, 1);
+                }
+            }
+        }}}

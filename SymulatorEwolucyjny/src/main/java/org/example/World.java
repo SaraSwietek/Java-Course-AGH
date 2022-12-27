@@ -18,9 +18,8 @@ public class World {
         System.out.println(pet3.getGenotypeInt());
 
 
-        //Simulator simulator = new Simulator();
-        //simulator.addRandomGrass(map,10);
-        //System.out.println(simulator.getGrasses());
+        Simulator simulator = new Simulator();
+        System.out.println(simulator.getGrasses());
 
         //Application.launch(App.class, args);
 

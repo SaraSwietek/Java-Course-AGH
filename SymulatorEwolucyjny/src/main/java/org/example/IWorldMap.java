@@ -45,6 +45,7 @@ public interface IWorldMap {
      *            The position of the object.
      * @return Object or null if the position is not occupied.
      */
+    boolean isOccupiedByGrass(Vector2d position);
     Object objectAt(Vector2d position);
 
     void moveTo(Animal pet);

@@ -1,7 +1,7 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class Genotype extends Simulator{
     private ArrayList<Integer> GeneArr = new ArrayList<>();
@@ -41,6 +41,30 @@ public class Genotype extends Simulator{
             }
         }
         return newGenArr;
+    }
+
+    public ArrayList<Integer> mutateGenotype(ArrayList<Integer> genotypeArray){
+
+        Random r1 = new Random();
+        List<Integer> rangeList = IntStream.rangeClosed(0, GENE_LENGTH-1)
+                .boxed().toList(); // lista indexów długości genomu
+        int numToMutate = r1.nextInt(GENE_LENGTH + 1); // ranodmowa liczba genów do mutacji
+
+        // get random subset of size numToMutate
+        List<Integer> rangeLinkedList = new LinkedList<Integer>(rangeList);
+        Collections.shuffle(rangeLinkedList);
+        Set<Integer> indexesToMutate = new HashSet<Integer>(rangeLinkedList.subList(0, numToMutate));
+
+        Iterator<Integer> indexesIterator = indexesToMutate.iterator();
+
+        while(indexesIterator.hasNext()) {
+            Integer indexToMutate = indexesIterator.next();
+            Random r2 = new Random();
+            int newGene = r2.nextInt(GENE_LENGTH);
+            genotypeArray.set(indexToMutate, newGene);
+        }
+
+        return genotypeArray;
     }
 
     //musimy jeszcze zaimplementować walkę o rozmnażanie na 1 polu (jak więcej niż 2 zwierzaki na 1 polu)

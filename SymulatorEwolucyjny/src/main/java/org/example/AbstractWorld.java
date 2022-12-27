@@ -12,7 +12,7 @@ abstract public class AbstractWorld implements IWorldMap{
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
     protected Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
-    protected Map<Vector2d, Grass> grasses = new LinkedHashMap<>();
+    protected Map<Vector2d, ArrayList<Grass>> grasses = new LinkedHashMap<>();
 
 
     public AbstractWorld(int width, int height){
@@ -49,9 +49,18 @@ abstract public class AbstractWorld implements IWorldMap{
 
     public boolean place(Animal animal) {
         Vector2d newAnimalPosition = animal.getPosition();
-        if (newAnimalPosition.follows(lowerLeft) && newAnimalPosition.precedes(upperRight)){
+        if (newAnimalPosition.follows(lowerLeft) && newAnimalPosition.precedes(upperRight)){ //jesli miesci sie w ramach mapy
             this.animals.get(newAnimalPosition).add(animal);
             this.animals.get(newAnimalPosition).sort(compareGenotype.reversed());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean placeGrass(Grass grass) {
+        Vector2d newGrassPosition = grass.getPosition();
+        if (newGrassPosition.follows(lowerLeft) && newGrassPosition.precedes(upperRight) && !(objectAt(newGrassPosition) instanceof Grass)){
+            this.grasses.get(newGrassPosition).add(grass);
             return true;
         }
         return false;

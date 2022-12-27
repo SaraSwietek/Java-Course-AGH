@@ -17,6 +17,10 @@ public class World {
         System.out.println(pet3.getGenotype());
         System.out.println(pet3.getGenotypeInt());
 
+        Grass grass1 = new Grass(map, new Vector2d(2,2));
+        Grass grass2 = new Grass(map, new Vector2d(2,2));
+
+
         //Application.launch(App.class, args);
 
     }

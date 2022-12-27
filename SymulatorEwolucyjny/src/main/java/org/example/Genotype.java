@@ -19,7 +19,7 @@ public class Genotype extends Simulator{
     }
 
     public int getCurrentGenotype(int i){      //nieco szaleństwa
-        int drawNumber = generator.nextInt(10)+1;
+        int drawNumber = generator.nextInt(10)+1; //losowanie od 1 do 10
         if (drawNumber <= 8){
             return this.GeneArr.get(i);
         }

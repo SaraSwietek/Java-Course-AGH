@@ -8,9 +8,12 @@ package org.example;
 //chyba źle?
 
 public class SphereMap extends AbstractWorld{
+
     public SphereMap(int width, int height) {
+
         super(width, height);
     }
+
     public void moveTo(Animal pet) {
         if (pet.position.x > width)
             pet.position = new Vector2d(0, pet.position.y);

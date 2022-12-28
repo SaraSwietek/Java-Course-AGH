@@ -1,6 +1,6 @@
 package org.example;
 
-public class Grass {
+public class Grass implements IMapElement {
     protected Vector2d position;
     IWorldMap map;
 
@@ -12,6 +12,7 @@ public class Grass {
     }
 
     public Vector2d getPosition(){
+
         return this.position;
     }
 
@@ -19,7 +20,8 @@ public class Grass {
 
     @Override
     public String toString(){
-        return String.valueOf(this.position);
+
+        return this.position.toString();
     }
 
 }

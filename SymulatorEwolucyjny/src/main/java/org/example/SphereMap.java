@@ -14,37 +14,17 @@ public class SphereMap extends AbstractWorld{
         super(width, height);
     }
 
-    public void moveTo(Animal pet) {
+    public void moveTo(Animal pet) { // zmienić na canMoveTo ? mamy to też w AbstractWorldzie
         if (pet.position.x > width)
             pet.position = new Vector2d(0, pet.position.y);
         if (pet.position.x < 0)
             pet.position = new Vector2d(width, pet.position.y);
         if (pet.position.y < 0 || pet.position.y > height) {
-            pet.position = pet.position.subtract(pet.orientation.toUnitVector());
+            pet.position = pet.position.subtract(pet.orientation.toUnitVector()); // wektor został dodany w Animalu
             pet.changeOrientation(4);
         }
     }
 
-    @Override
-    public int getWidth() {
-        return width;
-    }
 
-    @Override
-    public int getHeight() {
-        return height;
-    }
-
-    @Override
-    public boolean isOccupied(Vector2d position) {
-
-        if (animals.containsKey(position))
-            return true;
-
-        if (grasses.containsKey(position))
-            return true;
-
-        return false;
-    }
 
 }

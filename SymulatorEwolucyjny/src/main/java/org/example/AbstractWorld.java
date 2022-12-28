@@ -9,8 +9,8 @@ abstract public class AbstractWorld implements IWorldMap{
     protected int height;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
-    protected Map<Vector2d, Animal> animals = new LinkedHashMap<Vector2d, Animal>();
-    protected Map<Vector2d, Grass> grasses = new LinkedHashMap<Vector2d, Grass>();
+    protected Map<Vector2d, IMapElement> animals = new LinkedHashMap<Vector2d, IMapElement>();
+    protected Map<Vector2d, IMapElement> grasses = new LinkedHashMap<Vector2d, IMapElement>();
 
 
     public AbstractWorld(int width, int height){
@@ -33,31 +33,31 @@ abstract public class AbstractWorld implements IWorldMap{
         return null;
     }
 
-    public boolean isOccupiedByGrass(Vector2d position) {
+    public boolean isOccupied(Vector2d position) {
 
-        if (grasses.containsKey(position))
-            return true;
-
-        return false;
+        return objectAt(position) != null;
     }
 
-    public boolean place(Animal animal) {
-        Vector2d newAnimalPosition = animal.getPosition();
-        if (newAnimalPosition.follows(lowerLeft) && newAnimalPosition.precedes(upperRight)){ //jesli miesci sie w ramach mapy
-            this.animals.put(newAnimalPosition, animal);
-            return true;
-        }
-        return false;
-    }
+    public boolean place(IMapElement element) {
+        Vector2d newElementPosition = element.getPosition();
+        if (newElementPosition.follows(lowerLeft) && newElementPosition.precedes(upperRight)){ //jesli miesci sie w ramach mapy
+            if(element instanceof Animal)
+                this.animals.put(newElementPosition, element);
+            else
+                this.grasses.put(newElementPosition, element);
 
-    public boolean placeGrass(Grass grass) {
-        Vector2d newGrassPosition = grass.getPosition();
-        if (newGrassPosition.follows(lowerLeft) && newGrassPosition.precedes(upperRight) && !(objectAt(newGrassPosition) instanceof Grass)){
-            this.grasses.put(newGrassPosition, grass);
             return true;
         }
         return false;
     }
 
+    @Override
+    public int getWidth() {
+        return this.width;
+    }
 
+    @Override
+    public int getHeight() {
+        return this.height;
+    }
 }

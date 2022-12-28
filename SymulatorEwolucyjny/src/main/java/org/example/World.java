@@ -9,7 +9,7 @@ public class World {
         System.out.println(pet2.orientation);
         System.out.println(pet1.getGenotype());
         System.out.println(pet2.getGenotype());
-        pet2.changeOrientation(pet1.gene.getCurrentGenotype(pet1.currentGene));
+        pet2.changeOrientation(pet1.genom.getCrazyGenotype(pet1.currentGeneIndex));
         pet2.move();
         System.out.println(pet2.position);
         System.out.println(pet2.orientation);
@@ -18,7 +18,7 @@ public class World {
         System.out.println(pet3.getGenotypeInt());
 
         Simulator simulator = new Simulator();
-        System.out.println(simulator.getGrasses());
+//        System.out.println(simulator.getGrasses());
 
         //Application.launch(App.class, args);
 

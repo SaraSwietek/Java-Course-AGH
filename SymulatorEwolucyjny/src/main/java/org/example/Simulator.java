@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Simulator {
-    protected static final int GENE_LENGTH = 8;
+public class Simulator { // odpowiedzialne tylko za symulacje ?
+    protected final static int GENE_LENGTH = 8; // stała do losowania tylko ? zrobić jakoś żeby była tylko w jednym miejscu a nie 3
     protected int day = 0;
 
-    protected List<Animal> animals = new ArrayList<Animal>();
-    protected List<Grass> grasses = new ArrayList<Grass>();
+//    protected List<Animal> animals = new ArrayList<Animal>(); // trzeba ?
+//    protected List<Grass> grasses = new ArrayList<Grass>(); // trzeba ?
 
-    private final Random generator = new Random();
+    private final Random generator = new Random(); // dlaczego final ?
 
-    private ArrayList<Integer> GeneArr = new ArrayList<>();
-    SphereMap map = new SphereMap(10,10);
+    private ArrayList<Integer> GeneArr = new ArrayList<>(); /// po co ??
+    SphereMap map = new SphereMap(10,10); // po co ?
 
 
 
@@ -28,21 +28,21 @@ public class Simulator {
 
                 Animal sampleAnimal = new Animal(map, new Vector2d(x, y));
                 if (map.place(sampleAnimal)) {
-                    this.animals.add(sampleAnimal);
+//                    this.animals.add(sampleAnimal);
                     i++;
                 }
             }
         }
     }
 
-    public int getCurrentGenotype(int i){      //nieco szaleństwa
-        int drawNumber = generator.nextInt(10)+1; //losowanie od 1 do 10
-        if (drawNumber <= 8){
-            return this.GeneArr.get(i); //w obrebie rownika
-        }
-        //poza rownikiem
-        return this.GeneArr.get(generator.nextInt(GENE_LENGTH));
-    }
+//    public int getCrazyGenotype(int i){      //nieco szaleństwa - przy poruszaniu czasami będzie zmieniał gen, czemu tu i w Genotype ?
+//        int drawNumber = generator.nextInt(10)+1; //losowanie od 1 do 10
+//        if (drawNumber <= 8){
+//            return this.GeneArr.get(i); //w 80% przypatkach normalnie
+//        }
+//        //w 20% losowy gen
+//        return this.GeneArr.get(generator.nextInt(GENE_LENGTH));
+//    }
 
     public void addRandomGrass(IWorldMap map, int initGrassNumber) {
         int i = 0;
@@ -59,7 +59,7 @@ public class Simulator {
             }
             else{ //20% w innym miejscu
                 x = rand.nextInt(map.getWidth());
-                int randd = (generator.nextInt(2)); //losowanie od 1 do 2
+                int randd = (generator.nextInt(2)); //losowanie od 1 do 2 potrzebna nowa zmienna skoro mamy już rand ?
                 if(randd==0){
                     y = rand.nextInt((int) (map.getHeight()*0.4)+1);
                 }
@@ -69,31 +69,21 @@ public class Simulator {
 
             }
 
-            if (!(map.isOccupiedByGrass(new Vector2d(x, y)))) { //NIE DZIALA
-
-                Grass sampleGrass = new Grass(map, new Vector2d(x, y));
-                this.grasses.add(sampleGrass);
-                this.map.grasses.put(sampleGrass.getPosition(), sampleGrass); //trzeba?
-                i++;
-
-            }
-
 
             if (!(map.objectAt(new Vector2d(x, y)) instanceof Grass)) {
 
                 Grass sampleGrass = new Grass(map, new Vector2d(x, y));
-                if (map.placeGrass(sampleGrass)) {
-                    this.grasses.add(sampleGrass);
+                if (map.place(sampleGrass)) {
+//                    this.grasses.add(sampleGrass);
                     i++;
-
                 }
             }
         }
     }
 
     public Simulator(){
-        addRandomGrass(map, 1);
-//        addRandomAnimals(map, 1);
+        addRandomGrass(map, 10);
+        addRandomAnimals(map, 10);
         //for(int i=0; i<10; i++){
             //delete dead animals
             //changeOrientation();
@@ -105,7 +95,7 @@ public class Simulator {
         //}
     }
 
-    public List<Grass> getGrasses(){
-        return this.grasses;
-    }
+//    public List<Grass> getGrasses(){
+//        return this.grasses;
+//    }
 }

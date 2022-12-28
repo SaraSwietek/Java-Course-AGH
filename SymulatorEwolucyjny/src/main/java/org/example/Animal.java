@@ -2,7 +2,8 @@ package org.example;
 
 import java.util.ArrayList;
 
-public class Animal extends Simulator{
+public class Animal {
+    protected static final int GENE_LENGTH = 8;
     protected int energy;
     protected MapDirection orientation;
     protected int days;

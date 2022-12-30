@@ -58,7 +58,7 @@ public class Simulator {
 
             int rand = generator.nextInt(10) + 1;
 
-            if (parameters.getGrassGrowing() == 2) {
+            if (parameters.getGrassGrowing() == 2) { // zielone równiki
                 //80% rownik
 
                 if (rand <= 8) {
@@ -75,7 +75,7 @@ public class Simulator {
                     }
 
                 }
-            } else {
+            } else { // trupy
 
                 Map<Vector2d, Integer> sorted = map.deathCount.entrySet()
                         .stream().sorted(Map.Entry.comparingByValue())

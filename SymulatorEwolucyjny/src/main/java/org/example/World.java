@@ -9,7 +9,11 @@ import static java.util.stream.Collectors.toMap;
 
 public class World {
     public static void main(String[] args) throws FileNotFoundException {
+
         SphereMap map = new SphereMap(10, 10);
+
+//        SphereMap map = new SphereMap(10, 10);
+
 //        Animal pet1 = new Animal(map, new Vector2d(2, 10));
 //        Animal pet2 = new Animal(map, new Vector2d(0, 5));
 //        System.out.println(pet2.position);

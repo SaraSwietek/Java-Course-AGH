@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Animal extends ParametersLoader implements IMapElement {
@@ -12,20 +13,21 @@ public class Animal extends ParametersLoader implements IMapElement {
     protected Vector2d position;
     protected int currentGeneIndex;
     IWorldMap map;
+    ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
 
-    public Animal(IWorldMap map, Vector2d randomPosition){
+    public Animal(IWorldMap map, Vector2d randomPosition) throws FileNotFoundException {
         this.orientation = MapDirection.NORTH;
         this.days = 0;
         this.children = 0;
         this.position = randomPosition;
         this.energy = 20;
-        this.genom = new Genotype(genotypeLength);
+        this.genom = new Genotype(parameters.getGenotypeLength());
         this.currentGeneIndex = 0;
         this.map= map;
     }
 
-    public Animal(IWorldMap map, Animal parent1, Animal parent2){
+    public Animal(IWorldMap map, Animal parent1, Animal parent2) throws FileNotFoundException {
         this.orientation = MapDirection.NORTH;
         this.days = 0;
         this.children = 0;

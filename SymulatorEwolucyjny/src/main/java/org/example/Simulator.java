@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,6 +15,7 @@ public class Simulator extends ParametersLoader{ // odpowiedzialne tylko za symu
 
     private ArrayList<Integer> GeneArr = new ArrayList<>(); /// po co ??
     SphereMap map = new SphereMap(10,10); // po co ?
+    ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
 
 
@@ -25,10 +27,15 @@ public class Simulator extends ParametersLoader{ // odpowiedzialne tylko za symu
             int y = rand.nextInt(map.getHeight());
             if (!(map.objectAt(new Vector2d(x, y)) instanceof Animal)) {
 
-                Animal sampleAnimal = new Animal(map, new Vector2d(x, y));
-                if (map.place(sampleAnimal)) {
-                    this.animals.add(sampleAnimal);
-                    i++;
+                try{
+                    Animal sampleAnimal = new Animal(map, new Vector2d(x, y));
+                    if (map.place(sampleAnimal)) {
+                        this.animals.add(sampleAnimal);
+                        i++;
+
+                }}
+                catch (IllegalArgumentException | FileNotFoundException ex) {
+                    System.out.println(ex);
                 }
             }
         }
@@ -80,9 +87,9 @@ public class Simulator extends ParametersLoader{ // odpowiedzialne tylko za symu
         }
     }
 
-    public Simulator(){
-        addRandomGrass(map, 10);
-        addRandomAnimals(map, 10);
+    public Simulator() throws FileNotFoundException {
+        addRandomGrass(map, parameters.getGrassStartNumber());
+        addRandomAnimals(map, parameters.getAnimalsStartNumber());
         //for(int i=0; i<10; i++){
         //delete dead animals
         //changeOrientation();

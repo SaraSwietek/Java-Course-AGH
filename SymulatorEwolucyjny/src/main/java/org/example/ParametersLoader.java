@@ -23,7 +23,7 @@ public class ParametersLoader {
 
 
 
-    static public ParametersLoader loadPropFromFile() throws FileNotFoundException,IllegalArgumentException {
+    static public ParametersLoader loadPropFromFile() throws IllegalArgumentException, FileNotFoundException {
         Gson gson = new Gson();
         File f = new File("");
         System.out.println(f.getAbsolutePath());

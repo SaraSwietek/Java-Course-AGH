@@ -23,22 +23,14 @@ public class World {
         System.out.println(simulator.getGrasses());
         System.out.println(simulator.getAnimals());
 
-//        ParametersLoader properties = ParametersLoader.loadPropFromFile();
-//
-//        Integer[] defaultMapProperties = {
-//                properties.getMapWidth(),
-//                properties.getMapHeight(),
-//        };
-//
-//
 
         try {
             ParametersLoader properties = ParametersLoader.loadPropFromFile();
 
-            Integer[] defaultMapProperties = {
-                    properties.getMapWidth(),
-                    properties.getMapHeight(),
-            };
+            //Integer[] defaultMapProperties = {
+            //        properties.getMapWidth(),
+            //        properties.getMapHeight(),
+            //};
 
             System.out.println(properties.getMapWidth());
 

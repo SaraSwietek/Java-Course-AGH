@@ -1,46 +1,42 @@
 package org.example;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static java.util.stream.Collectors.toMap;
 
-public class Simulator{ // odpowiedzialne tylko za symulacje ?
-    //protected final static int GENE_LENGTH = 8; dziedziczy po ParametersLoader// stała do losowania tylko ? zrobić jakoś żeby była tylko w jednym miejscu a nie 3
+public class Simulator {
+
     protected int day = 0;
-    protected List<Animal> animals = new ArrayList<Animal>(); // trzeba ?
-    protected List<Grass> grasses = new ArrayList<Grass>(); // trzeba ?
 
     private final Random generator = new Random(); // dlaczego final ?
 
-    private ArrayList<Integer> GeneArr = new ArrayList<>(); /// po co ??
-    SphereMap map = new SphereMap(10,10); // po co ?
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
 
-
-    public void addRandomAnimals(IWorldMap map, int initAnimalsNumber) {
+    public void addRandomAnimals(AbstractWorld map, int initAnimalsNumber) {
         int i = 0;
         Random rand = new Random();
         while (i < initAnimalsNumber) {
             int x = rand.nextInt(map.getWidth());
             int y = rand.nextInt(map.getHeight());
-            if (!(map.objectAt(new Vector2d(x, y)) instanceof Animal)) {
+            Vector2d position = new Vector2d(x, y);
+            if (!(map.objectAt(position) instanceof Animal)) {
 
-                try{
+                try {
                     Animal sampleAnimal = new Animal(map, new Vector2d(x, y));
                     if (map.place(sampleAnimal)) {
-                        this.animals.add(sampleAnimal);
+                        map.animals.put(position,sampleAnimal);
                         i++;
 
-                }}
-                catch (IllegalArgumentException | FileNotFoundException ex) {
-                    System.out.println(ex);
+                    }
+                } catch (IllegalArgumentException | FileNotFoundException ex) {
+                    System.out.println(ex.getMessage());
                 }
             }
         }
     }
-
 
 
 //    public int getCrazyGenotype(int i){      //nieco szaleństwa - przy poruszaniu czasami będzie zmieniał gen, czemu tu i w Genotype ?
@@ -60,58 +56,117 @@ public class Simulator{ // odpowiedzialne tylko za symulacje ?
 
         while (i < initGrassNumber) {
 
-            int rand = generator.nextInt(10)+1;
+            int rand = generator.nextInt(10) + 1;
 
-            if( parameters.getGrassGrowing() == 2){
+            if (parameters.getGrassGrowing() == 2) {
                 //80% rownik
 
-                if (rand <= 8){
-                    x = generator.nextInt(map.getWidth()+1);
-                    y = (int) (generator.nextInt((int) (map.getHeight()*0.2))+(0.4*map.getHeight())+1);
+                if (rand <= 8) {
+                    x = generator.nextInt(map.getWidth() + 1);
+                    y = (int) (generator.nextInt((int) (map.getHeight() * 0.2)) + (0.4 * map.getHeight()) + 1);
 
-                }
-                else{ //20% w innym miejscu
+                } else { //20% w innym miejscu
                     x = generator.nextInt(map.getWidth());
 
-                    if(generator.nextBoolean()){
-                        y = generator.nextInt((int) (map.getHeight()*0.4)+1);
-                    }
-                    else{
-                        y = (int) (generator.nextInt((int) (map.getHeight()*0.4))+(0.6*map.getHeight())+1);
+                    if (generator.nextBoolean()) {
+                        y = generator.nextInt((int) (map.getHeight() * 0.4) + 1);
+                    } else {
+                        y = (int) (generator.nextInt((int) (map.getHeight() * 0.4)) + (0.6 * map.getHeight()) + 1);
                     }
 
                 }
-            }
-            else{
+            } else {
 
                 Map<Vector2d, Integer> sorted = map.deathCount.entrySet()
-                                                    .stream().sorted(Map.Entry.comparingByValue())
-                                                    .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) ->  e2, LinkedHashMap::new));
+                        .stream().sorted(Map.Entry.comparingByValue())
+                        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
 
+                Vector2d[] deathPlace = sorted.keySet().toArray(new Vector2d[(int) (sorted.size())]);
 
+                i = generator.nextInt((int) (sorted.size() * 0.8));
+                if (rand <= 2) {
+
+                    x = deathPlace[i].x;
+                    y = deathPlace[i].y;
+
+                } else {
+                    i = generator.nextInt(deathPlace.length - i) + i;
+
+                    x = deathPlace[i].x;
+                    y = deathPlace[i].y;
+
+                }
 
 
             }
 
+            Vector2d position = new Vector2d(x, y);
 
-
-            if (!(map.objectAt(new Vector2d(x, y)) instanceof Grass)) {
+            if (!(map.objectAt(position) instanceof Grass)) {
 
                 Grass sampleGrass = new Grass(map, new Vector2d(x, y));
                 if (map.place(sampleGrass)) {
-                    this.grasses.add(sampleGrass);
+                    map.grasses.put(position, sampleGrass);
                     i++;
                 }
             }
         }
     }
 
-    public Simulator() throws FileNotFoundException {
+    public Simulator(AbstractWorld map) throws FileNotFoundException {
         addRandomGrass(map, parameters.getGrassStartNumber());
         addRandomAnimals(map, parameters.getAnimalsStartNumber());
         //for(int i=0; i<10; i++){
         //delete dead animals
         //changeOrientation();
+        addRandomGrass(map, parameters.getGrassStartNumber());
+        addRandomAnimals(map, parameters.getAnimalsStartNumber());
+        //for(int i=0; i<10; i++){
+        //delete dead animals
+
+        //changeOrientation + move
+
+        for (Animal animal : map.animals.values()) {
+            int newGeneIndex;
+            if(parameters.getBehaviour() == 1){ // pełna predyscynacja
+                newGeneIndex = animal.currentGeneIndex;
+            }
+            else{ // nieco szaleństwa
+                int rand = generator.nextInt(10);
+
+                if(rand < 8){
+                    newGeneIndex = animal.currentGeneIndex;
+                }
+                else{
+                    newGeneIndex = generator.nextInt(parameters.getGenotypeLength());
+                }
+            }
+
+            animal.changeOrientation(animal.getGenotype().get(newGeneIndex));
+            animal.move();
+
+        }
+
+//        for (Animal animal : animals) {
+//            System.out.println(animal);
+//        }
+//
+//        for (Animal animal : animals) {
+//            if (animal.getEnergy()==18){
+//                animals.remove(animal);
+//            }
+//        }
+//
+//        for (Animal animal : animals) {
+//            System.out.println(animal);
+//        }
+
+        //eating grass
+        //reproduction
+        //grass growing
+
+        //this.day++;
+        //}
         //eating grass
         //reproduction
         //grass growing
@@ -120,10 +175,5 @@ public class Simulator{ // odpowiedzialne tylko za symulacje ?
         //}
     }
 
-    public List<Grass> getGrasses(){
-        return this.grasses;
-    }
-    public List<Animal> getAnimals(){
-        return this.animals;
-    }
+
 }

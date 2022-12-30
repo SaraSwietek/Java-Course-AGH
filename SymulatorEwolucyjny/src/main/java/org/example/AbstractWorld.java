@@ -10,8 +10,8 @@ abstract public class AbstractWorld implements IWorldMap{
     protected int height;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
-    protected Map<Vector2d, IMapElement> animals = new LinkedHashMap<>();
-    protected Map<Vector2d, IMapElement> grasses = new LinkedHashMap<>();
+    protected Map<Vector2d,Animal> animals = new LinkedHashMap<>();
+    protected Map<Vector2d, Grass> grasses = new LinkedHashMap<>();
     protected Map<Vector2d, Integer> deathCount = new LinkedHashMap<>();
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
@@ -26,7 +26,7 @@ abstract public class AbstractWorld implements IWorldMap{
     }
 
     @Override
-    public Object objectAt(Vector2d position) {
+    public IMapElement objectAt(Vector2d position) {
 
         if (animals.containsKey(position)) //containsKey returns True if that element is mapped in the map
             return animals.get(position);
@@ -46,9 +46,9 @@ abstract public class AbstractWorld implements IWorldMap{
         Vector2d newElementPosition = element.getPosition();
         if (newElementPosition.follows(lowerLeft) && newElementPosition.precedes(upperRight)){ //jesli miesci sie w ramach mapy
             if(element instanceof Animal)
-                this.animals.put(newElementPosition, element);
+                this.animals.put(newElementPosition, (Animal) element);
             else
-                this.grasses.put(newElementPosition, element);
+                this.grasses.put(newElementPosition, (Grass) element);
 
             return true;
         }

@@ -11,7 +11,7 @@ public class ParametersLoader {
     private int width;
     private int height;
     private int grassStartNumber;
-    private int grassEatingEnergyProfit;
+    private int grassEnergyProfit;
     private int grassDailyGrowthNumber;
     private int animalsStartNumber;
     private int animalsStartEnergy;
@@ -43,14 +43,14 @@ public class ParametersLoader {
         if(this.width <= 0){ throw new IllegalArgumentException("Invalid map width");}
         if(this.height <= 0){ throw new IllegalArgumentException("Invalid map height");}
         if(this.grassStartNumber <= 0){ throw new IllegalArgumentException("Invalid grass start number");}
-        if(this.grassEatingEnergyProfit <= 0){ throw new IllegalArgumentException("Invalid grass energy profit");}
+        if(this.grassEnergyProfit <= 0){ throw new IllegalArgumentException("Invalid grass energy profit");}
         if(this.grassDailyGrowthNumber<= 0){ throw new IllegalArgumentException("Invalid grass daily growth number");}
         if(this.animalsStartNumber <= 0){ throw new IllegalArgumentException("Invalid animals start number");}
         if(this.animalsStartEnergy <= 0){ throw new IllegalArgumentException("Invalid animals start energy");}
         if(this.animalsStepEnergyLoss <= 0){ throw new IllegalArgumentException("Invalid animals step energy loss");}
         if(this.copulationMinimumEnergy <= 0){ throw new IllegalArgumentException("Invalid copulation minimum energy");}
         if(this.makingChildCost <= 0){ throw new IllegalArgumentException("Invalid making child cost");}
-        if(this.maxMutationCount <= 0){ throw new IllegalArgumentException("Max mutation count below 0");}
+        if(this.maxMutationCount < 0){ throw new IllegalArgumentException("Max mutation count below 0");}
         if(this.genotypeLength < 0){ throw new IllegalArgumentException("Invalid genotype length");}
         if(this.maxMutationCount < this.minMutationCount){ throw new IllegalArgumentException("Max mutation count below min mutation count");}
 
@@ -96,12 +96,12 @@ public class ParametersLoader {
         this.behaviour = behaviour;
     }
 
-    public int getGrassEatingEnergyProfit() {
-        return grassEatingEnergyProfit;
+    public int getGrassEnergyProfit() {
+        return grassEnergyProfit;
     }
 
-    public void setGrassEatingEnergyProfit(int grassEatingEnergyProfit) {
-        this.grassEatingEnergyProfit = grassEatingEnergyProfit;
+    public void setGrassEnergyProfit(int grassEnergyProfit) {
+        this.grassEnergyProfit = grassEnergyProfit;
     }
 
     public int getGrassDailyGrowthNumber() {

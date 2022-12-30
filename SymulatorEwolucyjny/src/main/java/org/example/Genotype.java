@@ -20,8 +20,8 @@ public class Genotype {
 
     public Genotype(Animal parent1, Animal parent2) throws FileNotFoundException {
 
-        int side = generator.nextInt(2);
-        if(side == 1){
+
+        if(generator.nextBoolean()){
             this.genotype = calculateGenotype(parent1, parent2);
         }
         else{
@@ -80,6 +80,7 @@ public class Genotype {
                         genotype.set(i,(newGene - 1)%8);
 
                 }
+                genesToMutate--;
             }
 
         }

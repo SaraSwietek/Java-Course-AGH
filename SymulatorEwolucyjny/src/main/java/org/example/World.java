@@ -4,13 +4,13 @@ import java.io.FileNotFoundException;
 
 public class World {
     public static void main(String[] args) throws FileNotFoundException {
-        SphereMap map = new SphereMap(10, 10);
-        Animal pet1 = new Animal(map, new Vector2d(2, 10));
-        Animal pet2 = new Animal(map, new Vector2d(0, 5));
-        System.out.println(pet2.position);
-        System.out.println(pet2.orientation);
-        System.out.println(pet1.getGenotype());
-        System.out.println(pet2.getGenotype());
+//        SphereMap map = new SphereMap(10, 10);
+//        Animal pet1 = new Animal(map, new Vector2d(2, 10));
+//        Animal pet2 = new Animal(map, new Vector2d(0, 5));
+//        System.out.println(pet2.position);
+//        System.out.println(pet2.orientation);
+//        System.out.println(pet1.getGenotype());
+//        System.out.println(pet2.getGenotype());
 //        pet2.changeOrientation(pet1.genom.getCrazyGenotype(pet1.currentGeneIndex));
 //        pet2.move();
 //        System.out.println(pet2.position);

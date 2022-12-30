@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Simulator extends ParametersLoader{ // odpowiedzialne tylko za symulacje ?
+public class Simulator{ // odpowiedzialne tylko za symulacje ?
     //protected final static int GENE_LENGTH = 8; dziedziczy po ParametersLoader// stała do losowania tylko ? zrobić jakoś żeby była tylko w jednym miejscu a nie 3
     protected int day = 0;
     protected List<Animal> animals = new ArrayList<Animal>(); // trzeba ?

@@ -3,7 +3,7 @@ package org.example;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class Animal extends ParametersLoader implements IMapElement {
+public class Animal implements IMapElement {
     //protected static final int GENE_LENGTH = 8; // długość genomu, czy liczba genów do wyboru, patrz Genotype
     protected int energy;
     protected MapDirection orientation;
@@ -48,7 +48,7 @@ public class Animal extends ParametersLoader implements IMapElement {
         // if sprawdzający rodzaj mapy
         this.position = this.position.add(this.orientation.toUnitVector());
         map.moveTo(this);
-        if (this.currentGeneIndex == genotypeLength-1)
+        if (this.currentGeneIndex == parameters.getGenotypeLength()-1)
             this.currentGeneIndex = 0;
         else this.currentGeneIndex++;
     }

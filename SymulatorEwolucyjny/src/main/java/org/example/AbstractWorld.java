@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ abstract public class AbstractWorld extends ParametersLoader implements IWorldMa
     protected Vector2d upperRight;
     protected Map<Vector2d, IMapElement> animals = new LinkedHashMap<Vector2d, IMapElement>();
     protected Map<Vector2d, IMapElement> grasses = new LinkedHashMap<Vector2d, IMapElement>();
+
 
 
     public AbstractWorld(int width, int height){

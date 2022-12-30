@@ -4,20 +4,21 @@ import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-abstract public class AbstractWorld extends ParametersLoader implements IWorldMap{
+abstract public class AbstractWorld implements IWorldMap{
 
-    //protected int width; są dziedziczone po ParametersLoader
-    //protected int height;
+    protected int width;
+    protected int height;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
     protected Map<Vector2d, IMapElement> animals = new LinkedHashMap<Vector2d, IMapElement>();
     protected Map<Vector2d, IMapElement> grasses = new LinkedHashMap<Vector2d, IMapElement>();
+    ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
 
 
-    public AbstractWorld(int width, int height){
-        this.width = width;
-        this.height = height;
+    public AbstractWorld(int width, int height) throws FileNotFoundException {
+        this.width = parameters.getWidth();
+        this.height = parameters.getHeight();
         this.lowerLeft = new Vector2d(0, 0);
         this.upperRight = new Vector2d(width, height);
 

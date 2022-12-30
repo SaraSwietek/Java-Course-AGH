@@ -1,12 +1,16 @@
 package org.example;
 
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 public class HellMap extends AbstractWorld{
 
-    public HellMap(int width, int height) {
+    ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
+
+    public HellMap(int width, int height) throws FileNotFoundException {
 
         super(width, height);
+
     }
 
     public Vector2d generateRandomPosition(){ // potrzebne do teleportacji zwierzęcia jak wyjdzie poza mapę

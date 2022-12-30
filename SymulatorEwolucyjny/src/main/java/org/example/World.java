@@ -24,25 +24,6 @@ public class World {
         System.out.println(simulator.getAnimals());
 
 
-        try {
-            ParametersLoader properties = ParametersLoader.loadPropFromFile();
-
-            //Integer[] defaultMapProperties = {
-            //        properties.getMapWidth(),
-            //        properties.getMapHeight(),
-            //};
-
-            System.out.println(properties.getMapWidth());
-
-        }
-
-        catch (IllegalArgumentException | FileNotFoundException ex) {
-            System.out.println(ex);
-        }
-
-
-
-
         //Application.launch(App.class, args);
 
     }

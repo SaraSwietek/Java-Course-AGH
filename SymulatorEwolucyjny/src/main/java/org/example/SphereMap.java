@@ -7,9 +7,12 @@ package org.example;
 
 //chyba źle?
 
-public class SphereMap extends AbstractWorld{
+import java.io.FileNotFoundException;
 
-    public SphereMap(int width, int height) {
+public class SphereMap extends AbstractWorld{
+    ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
+
+    public SphereMap(int width, int height) throws FileNotFoundException {
 
         super(width, height);
     }

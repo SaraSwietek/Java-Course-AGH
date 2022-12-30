@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
+import java.io.FileNotFoundException;
+
 public class MainView extends VBox {
 
     private Button stepButton;
@@ -15,7 +17,7 @@ public class MainView extends VBox {
     private Grass grass;
     private Affine affine;
 
-    public MainView() {
+    public MainView() throws FileNotFoundException {
         stepButton = new Button("step");
         this.canvas = new Canvas(400, 400);
 

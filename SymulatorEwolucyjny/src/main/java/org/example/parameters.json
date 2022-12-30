@@ -6,6 +6,7 @@
   "grassDailyGrowthNumber": 10,
   "animalsStartNumber": 10,
   "animalsStartEnergy": 20,
+  "animalsStepEnergyLoss" : 2,
   "copulationMinimumEnergy": 15,
   "makingChildCost": 5,
   "maxMutationCount": 1,

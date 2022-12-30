@@ -15,6 +15,7 @@ public class ParametersLoader {
     protected int grassDailyGrowthNumber;
     protected int animalsStartNumber;
     protected int animalsStartEnergy;
+    protected int animalsStepEnergyLoss;
     protected int copulationMinimumEnergy;
     protected int makingChildCost;
     protected int maxMutationCount;
@@ -40,6 +41,7 @@ public class ParametersLoader {
         if(this.grassDailyGrowthNumber<= 0){ throw new IllegalArgumentException("Invalid grass daily growth number");}
         if(this.animalsStartNumber <= 0){ throw new IllegalArgumentException("Invalid animals start number");}
         if(this.animalsStartEnergy <= 0){ throw new IllegalArgumentException("Invalid animals start energy");}
+        if(this.animalsStepEnergyLoss <= 0){ throw new IllegalArgumentException("Invalid animals step energy loss");}
         if(this.copulationMinimumEnergy <= 0){ throw new IllegalArgumentException("Invalid copulation minimum energy");}
         if(this.makingChildCost <= 0){ throw new IllegalArgumentException("Invalid making child cost");}
         if(this.maxMutationCount <= 0){ throw new IllegalArgumentException("Invalid max mutation count");}
@@ -47,19 +49,19 @@ public class ParametersLoader {
 
     }
 
-    public int getMapWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public void setMapWidth(int width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
-    public int getMapHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setMapHeight(int height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
@@ -101,6 +103,14 @@ public class ParametersLoader {
 
     public void setAnimalsStartEnergy(int animalsStartEnergy) {
         this.animalsStartEnergy = animalsStartEnergy;
+    }
+
+    public int getAnimalsStepEnergyLoss() {
+        return animalsStepEnergyLoss;
+    }
+
+    public void setAnimalsStepEnergyLoss(int animalsStepEnergyLoss) {
+        this.animalsStepEnergyLoss = animalsStepEnergyLoss;
     }
 
 

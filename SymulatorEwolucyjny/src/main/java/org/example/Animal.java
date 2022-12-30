@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Animal implements IMapElement {
-    //protected static final int GENE_LENGTH = 8; // długość genomu, czy liczba genów do wyboru, patrz Genotype
+
     protected int energy;
     protected MapDirection orientation;
     protected int days;
@@ -22,7 +22,7 @@ public class Animal implements IMapElement {
         this.children = 0;
         this.position = randomPosition;
         this.energy = 20;
-        this.genom = new Genotype(parameters.getGenotypeLength());
+        this.genom = new Genotype();
         this.currentGeneIndex = 0;
         this.map= map;
     }

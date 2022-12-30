@@ -8,18 +8,24 @@ import java.io.FileReader;
 
 public class ParametersLoader {
 
-    protected int width;
-    protected int height;
-    protected int grassStartNumber;
-    protected int grassEnergyProfit;
-    protected int grassDailyGrowthNumber;
-    protected int animalsStartNumber;
-    protected int animalsStartEnergy;
-    protected int animalsStepEnergyLoss;
-    protected int copulationMinimumEnergy;
-    protected int makingChildCost;
-    protected int maxMutationCount;
-    protected int genotypeLength;
+    private int width;
+    private int height;
+    private int grassStartNumber;
+    private int grassEatingEnergyProfit;
+    private int grassDailyGrowthNumber;
+    private int animalsStartNumber;
+    private int animalsStartEnergy;
+    private int animalsStepEnergyLoss;
+    private int copulationMinimumEnergy;
+    private int makingChildCost;
+    private int maxMutationCount;
+    private int genotypeLength;
+    private int minMutationCount;
+    private int behaviour; // 1 - pełna predysktynacja, 2 - niecoszaleństwa
+    private int mutationKind; // 1 -pełna losowość, 2 - lekka korekta
+    private int grassGrowing; // 1 -trupy, 2 - równik
+    private int mapVariant; // 1 -kula ziemska, 2 - piekielny portal
+
 
 
 
@@ -37,15 +43,16 @@ public class ParametersLoader {
         if(this.width <= 0){ throw new IllegalArgumentException("Invalid map width");}
         if(this.height <= 0){ throw new IllegalArgumentException("Invalid map height");}
         if(this.grassStartNumber <= 0){ throw new IllegalArgumentException("Invalid grass start number");}
-        if(this.grassEnergyProfit <= 0){ throw new IllegalArgumentException("Invalid grass energy profit");}
+        if(this.grassEatingEnergyProfit <= 0){ throw new IllegalArgumentException("Invalid grass energy profit");}
         if(this.grassDailyGrowthNumber<= 0){ throw new IllegalArgumentException("Invalid grass daily growth number");}
         if(this.animalsStartNumber <= 0){ throw new IllegalArgumentException("Invalid animals start number");}
         if(this.animalsStartEnergy <= 0){ throw new IllegalArgumentException("Invalid animals start energy");}
         if(this.animalsStepEnergyLoss <= 0){ throw new IllegalArgumentException("Invalid animals step energy loss");}
         if(this.copulationMinimumEnergy <= 0){ throw new IllegalArgumentException("Invalid copulation minimum energy");}
         if(this.makingChildCost <= 0){ throw new IllegalArgumentException("Invalid making child cost");}
-        if(this.maxMutationCount <= 0){ throw new IllegalArgumentException("Invalid max mutation count");}
+        if(this.maxMutationCount <= 0){ throw new IllegalArgumentException("Max mutation count below 0");}
         if(this.genotypeLength < 0){ throw new IllegalArgumentException("Invalid genotype length");}
+        if(this.maxMutationCount < this.minMutationCount){ throw new IllegalArgumentException("Max mutation count below min mutation count");}
 
     }
 
@@ -69,16 +76,32 @@ public class ParametersLoader {
         return grassStartNumber;
     }
 
+    public int getMinMutationCount() {
+        return minMutationCount;
+    }
+
+    public void setMinMutationCount(int minMutationCount) {
+        this.minMutationCount = minMutationCount;
+    }
+
     public void setGrassStartNumber(int grassStartNumber) {
         this.grassStartNumber = grassStartNumber;
     }
 
+    public int getBehaviour() {
+        return behaviour;
+    }
+
+    public void setBehaviour(int behaviour) {
+        this.behaviour = behaviour;
+    }
+
     public int getGrassEatingEnergyProfit() {
-        return grassEnergyProfit;
+        return grassEatingEnergyProfit;
     }
 
     public void setGrassEatingEnergyProfit(int grassEatingEnergyProfit) {
-        this.grassEnergyProfit = grassEatingEnergyProfit;
+        this.grassEatingEnergyProfit = grassEatingEnergyProfit;
     }
 
     public int getGrassDailyGrowthNumber() {
@@ -146,4 +169,27 @@ public class ParametersLoader {
         this.genotypeLength = genotypeLength;
     }
 
+    public int getMutationKind() {
+        return mutationKind;
+    }
+
+    public void setMutationKind(int mutationKind) {
+        this.mutationKind = mutationKind;
+    }
+
+    public int getGrassGrowing() {
+        return grassGrowing;
+    }
+
+    public void setGrassGrowing(int grassGrowing) {
+        this.grassGrowing = grassGrowing;
+    }
+
+    public int getMapVariant() {
+        return mapVariant;
+    }
+
+    public void setMapVariant(int mapVariant) {
+        this.mapVariant = mapVariant;
+    }
 }

@@ -10,8 +10,9 @@ abstract public class AbstractWorld implements IWorldMap{
     protected int height;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
-    protected Map<Vector2d, IMapElement> animals = new LinkedHashMap<Vector2d, IMapElement>();
-    protected Map<Vector2d, IMapElement> grasses = new LinkedHashMap<Vector2d, IMapElement>();
+    protected Map<Vector2d, IMapElement> animals = new LinkedHashMap<>();
+    protected Map<Vector2d, IMapElement> grasses = new LinkedHashMap<>();
+    protected Map<Vector2d, Integer> deathCount = new LinkedHashMap<>();
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
 

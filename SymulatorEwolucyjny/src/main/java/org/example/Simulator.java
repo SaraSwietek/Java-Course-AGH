@@ -1,9 +1,9 @@
 package org.example;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
+import static java.util.stream.Collectors.toMap;
 
 public class Simulator{ // odpowiedzialne tylko za symulacje ?
     //protected final static int GENE_LENGTH = 8; dziedziczy po ParametersLoader// stała do losowania tylko ? zrobić jakoś żeby była tylko w jednym miejscu a nie 3
@@ -41,6 +41,8 @@ public class Simulator{ // odpowiedzialne tylko za symulacje ?
         }
     }
 
+
+
 //    public int getCrazyGenotype(int i){      //nieco szaleństwa - przy poruszaniu czasami będzie zmieniał gen, czemu tu i w Genotype ?
 //        int drawNumber = generator.nextInt(10)+1; //losowanie od 1 do 10
 //        if (drawNumber <= 8){
@@ -50,30 +52,47 @@ public class Simulator{ // odpowiedzialne tylko za symulacje ?
 //        return this.GeneArr.get(generator.nextInt(GENE_LENGTH));
 //    }
 
-    public void addRandomGrass(IWorldMap map, int initGrassNumber) {
+    public void addRandomGrass(AbstractWorld map, int initGrassNumber) {
         int i = 0;
-        Random rand = new Random();
+
         int x = 0;
         int y = 0;
 
-        while (i < initGrassNumber) { //80% rownik
-            int drawNumber = generator.nextInt(10)+1; //losowanie od 1 do 10
-            if (drawNumber <= 8){
-                x = rand.nextInt(map.getWidth()+1);
-                y = (int) (rand.nextInt((int) (map.getHeight()*0.2))+(0.4*map.getHeight())+1);
+        while (i < initGrassNumber) {
+
+            int rand = generator.nextInt(10)+1;
+
+            if( parameters.getGrassGrowing() == 2){
+                //80% rownik
+
+                if (rand <= 8){
+                    x = generator.nextInt(map.getWidth()+1);
+                    y = (int) (generator.nextInt((int) (map.getHeight()*0.2))+(0.4*map.getHeight())+1);
+
+                }
+                else{ //20% w innym miejscu
+                    x = generator.nextInt(map.getWidth());
+
+                    if(generator.nextBoolean()){
+                        y = generator.nextInt((int) (map.getHeight()*0.4)+1);
+                    }
+                    else{
+                        y = (int) (generator.nextInt((int) (map.getHeight()*0.4))+(0.6*map.getHeight())+1);
+                    }
+
+                }
+            }
+            else{
+
+                Map<Vector2d, Integer> sorted = map.deathCount.entrySet()
+                                                    .stream().sorted(Map.Entry.comparingByValue())
+                                                    .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) ->  e2, LinkedHashMap::new));
+
+
+
 
             }
-            else{ //20% w innym miejscu
-                x = rand.nextInt(map.getWidth());
-                int randd = (generator.nextInt(2)); //losowanie od 1 do 2 potrzebna nowa zmienna skoro mamy już rand ?
-                if(randd==0){
-                    y = rand.nextInt((int) (map.getHeight()*0.4)+1);
-                }
-                else{
-                    y = (int) (rand.nextInt((int) (map.getHeight()*0.4))+(0.6*map.getHeight())+1);
-                }
 
-            }
 
 
             if (!(map.objectAt(new Vector2d(x, y)) instanceof Grass)) {

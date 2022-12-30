@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Simulator { // odpowiedzialne tylko za symulacje ?
-    protected final static int GENE_LENGTH = 8; // stała do losowania tylko ? zrobić jakoś żeby była tylko w jednym miejscu a nie 3
+public class Simulator extends ParametersLoader{ // odpowiedzialne tylko za symulacje ?
+    //protected final static int GENE_LENGTH = 8; dziedziczy po ParametersLoader// stała do losowania tylko ? zrobić jakoś żeby była tylko w jednym miejscu a nie 3
     protected int day = 0;
-
-//    protected List<Animal> animals = new ArrayList<Animal>(); // trzeba ?
-//    protected List<Grass> grasses = new ArrayList<Grass>(); // trzeba ?
+    protected List<Animal> animals = new ArrayList<Animal>(); // trzeba ?
+    protected List<Grass> grasses = new ArrayList<Grass>(); // trzeba ?
 
     private final Random generator = new Random(); // dlaczego final ?
 
@@ -28,7 +27,7 @@ public class Simulator { // odpowiedzialne tylko za symulacje ?
 
                 Animal sampleAnimal = new Animal(map, new Vector2d(x, y));
                 if (map.place(sampleAnimal)) {
-//                    this.animals.add(sampleAnimal);
+                    this.animals.add(sampleAnimal);
                     i++;
                 }
             }
@@ -74,7 +73,7 @@ public class Simulator { // odpowiedzialne tylko za symulacje ?
 
                 Grass sampleGrass = new Grass(map, new Vector2d(x, y));
                 if (map.place(sampleGrass)) {
-//                    this.grasses.add(sampleGrass);
+                    this.grasses.add(sampleGrass);
                     i++;
                 }
             }
@@ -85,17 +84,20 @@ public class Simulator { // odpowiedzialne tylko za symulacje ?
         addRandomGrass(map, 10);
         addRandomAnimals(map, 10);
         //for(int i=0; i<10; i++){
-            //delete dead animals
-            //changeOrientation();
-            //eating grass
-            //reproduction
-            //grass growing
-            //animal decreasing energy
-            //this.day++;
+        //delete dead animals
+        //changeOrientation();
+        //eating grass
+        //reproduction
+        //grass growing
+        //animal decreasing energy
+        //this.day++;
         //}
     }
 
-//    public List<Grass> getGrasses(){
-//        return this.grasses;
-//    }
+    public List<Grass> getGrasses(){
+        return this.grasses;
+    }
+    public List<Animal> getAnimals(){
+        return this.animals;
+    }
 }

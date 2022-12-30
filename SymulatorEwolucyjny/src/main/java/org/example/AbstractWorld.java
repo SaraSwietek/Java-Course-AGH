@@ -3,10 +3,10 @@ package org.example;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-abstract public class AbstractWorld implements IWorldMap{
+abstract public class AbstractWorld extends ParametersLoader implements IWorldMap{
 
-    protected int width;
-    protected int height;
+    //protected int width; są dziedziczone po ParametersLoader
+    //protected int height;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
     protected Map<Vector2d, IMapElement> animals = new LinkedHashMap<Vector2d, IMapElement>();

@@ -1,0 +1,13 @@
+{
+  "width": 10,
+  "height": 10,
+  "grassStartNumber": 10,
+  "grassEnergyProfit": 2,
+  "grassDailyGrowthNumber": 10,
+  "animalsStartNumber": 10,
+  "animalsStartEnergy": 20,
+  "copulationMinimumEnergy": 15,
+  "makingChildCost": 5,
+  "maxMutationCount": 1,
+  "genotypeLength": 8
+}

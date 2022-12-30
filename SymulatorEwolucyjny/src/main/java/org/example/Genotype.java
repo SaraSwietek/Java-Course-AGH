@@ -51,7 +51,7 @@ public class Genotype {
         return newGenotype;
     }
 
-                      //Inna implementacje tego co niżej
+    //Inna implementacje tego co niżej
 
 //    public ArrayList<Integer> mutateGenotype(ArrayList<Integer> genotype){ // mutacja genów, wykonywana po obliczeniu genotypu
 //

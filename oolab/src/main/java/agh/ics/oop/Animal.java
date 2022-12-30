@@ -13,7 +13,6 @@ public class Animal {
     private MapDirection orientation;
     private Vector2d position;
     private IWorldMap map;
-
     private List<IPositionChangeObserver> observers = new ArrayList<>();
 
     public Animal(){

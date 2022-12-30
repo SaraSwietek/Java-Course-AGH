@@ -2,8 +2,8 @@ package org.example;
 
 import java.util.ArrayList;
 
-public class Animal implements IMapElement {
-    protected static final int GENE_LENGTH = 8; // długość genomu, czy liczba genów do wyboru, patrz Genotype
+public class Animal extends ParametersLoader implements IMapElement {
+    //protected static final int GENE_LENGTH = 8; // długość genomu, czy liczba genów do wyboru, patrz Genotype
     protected int energy;
     protected MapDirection orientation;
     protected int days;
@@ -20,7 +20,7 @@ public class Animal implements IMapElement {
         this.children = 0;
         this.position = randomPosition;
         this.energy = 20;
-        this.genom = new Genotype(GENE_LENGTH);
+        this.genom = new Genotype(genotypeLength);
         this.currentGeneIndex = 0;
         this.map= map;
     }
@@ -46,22 +46,26 @@ public class Animal implements IMapElement {
         // if sprawdzający rodzaj mapy
         this.position = this.position.add(this.orientation.toUnitVector());
         map.moveTo(this);
-        if (this.currentGeneIndex == GENE_LENGTH-1)
+        if (this.currentGeneIndex == genotypeLength-1)
             this.currentGeneIndex = 0;
         else this.currentGeneIndex++;
     }
 
+//    public String toString() {
+//        return switch(this.orientation) {
+//            case NORTH -> "N";
+//            case NORTHEAST -> "NE";
+//            case EAST -> "E";
+//            case SOUTHEAST -> "SE";
+//            case SOUTH -> "S";
+//            case SOUTHWEST -> "SW";
+//            case WEST -> "W";
+//            case NORTHWEST -> "NW";
+//        };
+//    }
+
     public String toString() {
-        return switch(this.orientation) {
-            case NORTH -> "N";
-            case NORTHEAST -> "NE";
-            case EAST -> "E";
-            case SOUTHEAST -> "SE";
-            case SOUTH -> "S";
-            case SOUTHWEST -> "SW";
-            case WEST -> "W";
-            case NORTHWEST -> "NW";
-        };
+        return this.getGenotype().toString();
     }
 
     public ArrayList<Integer> getGenotype(){

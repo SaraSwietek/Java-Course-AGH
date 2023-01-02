@@ -39,7 +39,7 @@ public class Animal implements IMapElement {
         this.days = 0;
         this.children = 0;
         this.position = parent1.getPosition();
-        this.energy = parent1.getEnergy() / 4 + parent2.getEnergy() / 4;
+        this.energy = 2*parameters.getMakingChildCost();//parent1.getEnergy() / 4 + parent2.getEnergy() / 4;
         this.genom = new Genotype(parent1, parent2);
         int w = rand.nextInt(parameters.getGenotypeLength());
         this.currentGeneIndex = w;
@@ -100,13 +100,11 @@ public class Animal implements IMapElement {
 
     public boolean isEnergyMoreThan(int n)
     {
-
         return (this.getEnergy()>=n);
     }
 
     public boolean isEnergyLessThan(int n)
     {
-
         return (this.getEnergy()<=n);
     }
 

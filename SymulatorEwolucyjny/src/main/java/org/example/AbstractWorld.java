@@ -1,9 +1,7 @@
 package org.example;
 
 import java.io.FileNotFoundException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 abstract public class AbstractWorld implements IWorldMap{
 
@@ -11,7 +9,7 @@ abstract public class AbstractWorld implements IWorldMap{
     protected int height;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
-    protected Map<Vector2d, List<Animal>> animals = new LinkedHashMap<>();
+    protected Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
     protected Map<Vector2d, Grass> grasses = new LinkedHashMap<>();
     protected Map<Vector2d, Integer> deathCount = new LinkedHashMap<>();
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
@@ -47,9 +45,16 @@ abstract public class AbstractWorld implements IWorldMap{
         Vector2d newElementPosition = element.getPosition();
         if (newElementPosition.follows(lowerLeft) && newElementPosition.precedes(upperRight)){ //jesli miesci sie w ramach mapy
             if(element instanceof Animal){
-                List<Animal> list;
-                list = this.animals.get(newElementPosition);
-                list.add((Animal) element);
+                ArrayList<Animal> list;
+
+                if(this.animals.get(newElementPosition)==null){
+                    list = new ArrayList<Animal>();
+                    list.add((Animal) element);
+                }
+                else{
+                    list = this.animals.get(newElementPosition);
+                    list.add((Animal) element);
+                }
                 this.animals.put(newElementPosition, list);
             }
             else
@@ -68,5 +73,13 @@ abstract public class AbstractWorld implements IWorldMap{
     @Override
     public int getHeight() {
         return this.height;
+    }
+
+    public LinkedHashMap getAnimals(){
+        return (LinkedHashMap) this.animals;
+    }
+
+    public LinkedHashMap getGrasses(){
+        return (LinkedHashMap) this.grasses;
     }
 }

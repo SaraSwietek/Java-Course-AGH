@@ -18,10 +18,16 @@ public class Grass implements IMapElement {
 
 
 
+//    @Override
+//    public String toString(){
+//
+//        return this.position.toString();
+//    }
+
     @Override
     public String toString(){
 
-        return this.position.toString();
+        return "*";
     }
 
 }

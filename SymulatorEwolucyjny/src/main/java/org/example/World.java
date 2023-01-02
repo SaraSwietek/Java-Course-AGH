@@ -14,8 +14,13 @@ public class World {
 
 //        SphereMap map = new SphereMap(10, 10);
 
-//        Animal pet1 = new Animal(map, new Vector2d(2, 10));
-//        Animal pet2 = new Animal(map, new Vector2d(0, 5));
+        //Animal pet1 = new Animal(map, new Vector2d(2, 10));
+        //Animal pet2 = new Animal(map, new Vector2d(0, 5));
+        //map.place(pet1);
+        //map.place(pet1);
+        //map.place(pet2);
+
+        //System.out.println(map.getAnimals());
 //        System.out.println(pet2.position);
 //        System.out.println(pet2.orientation);
 //        System.out.println(pet1.getGenotype());
@@ -27,7 +32,7 @@ public class World {
 
 //        System.out.println(pet3.getGenotypeInt());
 
-//        Simulator simulator = new Simulator(map);
+          Simulator simulator = new Simulator(map);
 //        System.out.println(simulator.getGrasses());
 //        System.out.println(simulator.getAnimals());
 
@@ -49,13 +54,13 @@ public class World {
 //        System.out.println(Arrays.toString(deathPlace));
 
 
-        Map<Vector2d,Integer> an = new LinkedHashMap<>();
-        Vector2d pos = new Vector2d(1,1);
-        an.put(pos, 1);
-        an.put(pos, 2);
+        //Map<Vector2d,Integer> an = new LinkedHashMap<>();
+        //Vector2d pos = new Vector2d(1,1);
+        //an.put(pos, 1);
+        //an.put(pos, 2);
 
-        System.out.println(an);
-        System.out.println(an.get(pos));
+        //System.out.println(an);
+        //System.out.println(an.get(pos));
 
 
 

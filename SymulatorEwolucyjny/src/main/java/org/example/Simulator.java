@@ -1,7 +1,6 @@
 package org.example;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static java.util.stream.Collectors.toMap;
@@ -27,11 +26,20 @@ public class Simulator {
                 try {
                     Animal sampleAnimal = new Animal(map, new Vector2d(x, y));
                     if (map.place(sampleAnimal)) {
-
-                        List<Animal> list;
-                        list = map.animals.get(position);
-                        list.add(sampleAnimal);
-                        map.animals.put(position, list);
+                        ArrayList<Animal> list;
+                        if(map.animals.get(position)==null){
+                            list = new ArrayList<Animal>();
+                            list.add((Animal) sampleAnimal);
+                        }
+                        else{
+                            list = map.animals.get(position);
+                            list.add(sampleAnimal);
+                            map.animals.put(position, list);
+                        }
+                        //ArrayList<Animal> list;
+                        //list = map.animals.get(position);
+                        //list.add(sampleAnimal);
+                        //map.animals.put(position, list);
                         i++;
 
                     }
@@ -52,7 +60,7 @@ public class Simulator {
         if(map.animals.containsKey(position)){
             if(map.grasses.containsKey(position)){
                 if(map.animals.get(position).size() == 1){
-                    grassEating(map.animals.get(position).get(0));
+                    //grassEating(map.animals.get(position).get(0));
                 }
                 else{
 //                    map.animals.get(position).stream().max(Comparator.comparing(Animal::getEnergy));
@@ -60,11 +68,11 @@ public class Simulator {
                                                     sorted(Comparator.comparing(Animal::getEnergy).reversed()).toList();
 
                     if(energyList.get(0) != energyList.get(1)){
-                        grassEating(energyList.get(0));
-                        if(map.animals.get(position).size() > 2 && energyList.get(0) == energyList.get(3))
+                        //grassEating(energyList.get(0));
+                        if(map.animals.get(position).size() > 2 && energyList.get(0) == energyList.get(3));
                     }
                     else{
-                        List<Animal>
+                        //List<Animal>
                     }
 
                 }
@@ -74,12 +82,26 @@ public class Simulator {
 
     }
 
-    public void grassEating( Animal animal){
-
+    public void grassEating( AbstractWorld map, Animal animal){
+        //obecnosc trawy będzie sprawdzana w walce ????
+        animal.changeEnergy(parameters.getGrassEnergyProfit());
+        //usunac trawe
+        map.grasses.remove(animal.getPosition());
     }
 
-    public void reproduction(AbstractWorld map, Vector2d position, Animal animal1, Animal animal2){
+    public void reproduction(AbstractWorld map, Animal animal1, Animal animal2) throws FileNotFoundException {
 
+        if (animal1.isEnergyMoreThan(parameters.getCopulationMinimumEnergy()) &&
+                animal2.isEnergyMoreThan(parameters.getCopulationMinimumEnergy())){
+            animal1.changeEnergy(-parameters.getMakingChildCost());
+            animal2.changeEnergy(-parameters.getMakingChildCost());
+
+            //Narodzone dziecko pojawia się na tym samym polu co jego rodzice -> w konstruktorze!
+            //Energia dziecka to suma energii, którą utracili rodzice (konstruktor)
+            Animal child = new Animal(map, animal1, animal2);
+            map.place(child);
+
+        }
 
     }
 
@@ -142,7 +164,7 @@ public class Simulator {
 
                 Grass sampleGrass = new Grass(map, new Vector2d(x, y));
                 if (map.place(sampleGrass)) {
-                    map.grasses.put(position, sampleGrass);
+                    //map.grasses.put(position, sampleGrass);
                     i++;
                 }
             }
@@ -151,12 +173,31 @@ public class Simulator {
 
     public Simulator(AbstractWorld map) throws FileNotFoundException {
         addRandomGrass(map, parameters.getGrassStartNumber());
-        addRandomAnimals(map, parameters.getAnimalsStartNumber());
+        System.out.println(map.getGrasses());
+
+        //JAK TWORZYMY NOWY WEKTOR TO JEST NOWYM KLUCZEM NAWET NA TEJ SAMEJ POZYCJI
+        Vector2d vector = new Vector2d(2, 10);
+        Animal pet1 = new Animal(map, vector);
+        Animal pet2 = new Animal(map, vector);
+        map.place(pet1);
+        map.place(pet2);
+        System.out.println(map.getAnimals());
+        reproduction(map, pet1, pet2 );
+        System.out.println(map.getAnimals());
+
+
+
+        //addRandomAnimals(map, parameters.getAnimalsStartNumber());
+
+        //for (List<Animal> animal : map.animals.values()) {
+        //    System.out.println(animal);
+        //}
+
         //for(int i=0; i<10; i++){
         //delete dead animals
         //changeOrientation();
-        addRandomGrass(map, parameters.getGrassStartNumber());
-        addRandomAnimals(map, parameters.getAnimalsStartNumber());
+        //addRandomGrass(map, parameters.getGrassStartNumber());
+        //addRandomAnimals(map, parameters.getAnimalsStartNumber());
         //for(int i=0; i<10; i++){
         //delete dead animals
 
@@ -187,23 +228,12 @@ public class Simulator {
 
         }
 
-//        for (Animal animal : animals) {
-//            System.out.println(animal);
-//        }
-//
-//        for (Animal animal : animals) {
-//            if (animal.getEnergy()==18){
-//                animals.remove(animal);
-//            }
-//        }
-//
-//        for (Animal animal : animals) {
-//            System.out.println(animal);
-//        }
-
         //eating grass
         //reproduction
         //grass growing
+
+        addRandomGrass(map, parameters.getGrassDailyGrowthNumber());
+        System.out.println(map.getGrasses());
 
         //this.day++;
         //}

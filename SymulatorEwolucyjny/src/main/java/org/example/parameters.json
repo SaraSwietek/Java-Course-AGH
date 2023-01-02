@@ -1,7 +1,7 @@
 {
   "width": 10,
   "height": 10,
-  "grassStartNumber": 5,
+  "grassStartNumber": 50,
   "grassEnergyProfit": 2,
   "grassDailyGrowthNumber": 2,
   "animalsStartNumber": 2,

@@ -2,6 +2,7 @@ package org.example;
 
 import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 abstract public class AbstractWorld implements IWorldMap{
@@ -10,7 +11,7 @@ abstract public class AbstractWorld implements IWorldMap{
     protected int height;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
-    protected Map<Vector2d,Animal> animals = new LinkedHashMap<>();
+    protected Map<Vector2d, List<Animal>> animals = new LinkedHashMap<>();
     protected Map<Vector2d, Grass> grasses = new LinkedHashMap<>();
     protected Map<Vector2d, Integer> deathCount = new LinkedHashMap<>();
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
@@ -26,7 +27,7 @@ abstract public class AbstractWorld implements IWorldMap{
     }
 
     @Override
-    public IMapElement objectAt(Vector2d position) {
+    public Object objectAt(Vector2d position) {
 
         if (animals.containsKey(position)) //containsKey returns True if that element is mapped in the map
             return animals.get(position);
@@ -45,8 +46,12 @@ abstract public class AbstractWorld implements IWorldMap{
     public boolean place(IMapElement element) {
         Vector2d newElementPosition = element.getPosition();
         if (newElementPosition.follows(lowerLeft) && newElementPosition.precedes(upperRight)){ //jesli miesci sie w ramach mapy
-            if(element instanceof Animal)
-                this.animals.put(newElementPosition, (Animal) element);
+            if(element instanceof Animal){
+                List<Animal> list;
+                list = this.animals.get(newElementPosition);
+                list.add((Animal) element);
+                this.animals.put(newElementPosition, list);
+            }
             else
                 this.grasses.put(newElementPosition, (Grass) element);
 

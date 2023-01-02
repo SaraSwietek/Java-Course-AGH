@@ -27,7 +27,11 @@ public class Simulator {
                 try {
                     Animal sampleAnimal = new Animal(map, new Vector2d(x, y));
                     if (map.place(sampleAnimal)) {
-                        map.animals.put(position,sampleAnimal);
+
+                        List<Animal> list;
+                        list = map.animals.get(position);
+                        list.add(sampleAnimal);
+                        map.animals.put(position, list);
                         i++;
 
                     }
@@ -39,14 +43,46 @@ public class Simulator {
     }
 
 
-//    public int getCrazyGenotype(int i){      //nieco szaleństwa - przy poruszaniu czasami będzie zmieniał gen, czemu tu i w Genotype ?
-//        int drawNumber = generator.nextInt(10)+1; //losowanie od 1 do 10
-//        if (drawNumber <= 8){
-//            return this.GeneArr.get(i); //w 80% przypatkach normalnie
-//        }
-//        //w 20% losowy gen
-//        return this.GeneArr.get(generator.nextInt(GENE_LENGTH));
-//    }
+    public void fight(AbstractWorld map, Vector2d position){
+
+//        ustalenie czy jest trawa i czy są zwierzęta na pozycji position w mapie map
+        // rozstrzygnięcie które zwierze je trawę i które się ze sobą rozmnażają
+        Animal happyAnimal, secoundHappyAnimal;
+
+        if(map.animals.containsKey(position)){
+            if(map.grasses.containsKey(position)){
+                if(map.animals.get(position).size() == 1){
+                    grassEating(map.animals.get(position).get(0));
+                }
+                else{
+//                    map.animals.get(position).stream().max(Comparator.comparing(Animal::getEnergy));
+                    List<Animal> energyList = map.animals.get(position).stream().
+                                                    sorted(Comparator.comparing(Animal::getEnergy).reversed()).toList();
+
+                    if(energyList.get(0) != energyList.get(1)){
+                        grassEating(energyList.get(0));
+                        if(map.animals.get(position).size() > 2 && energyList.get(0) == energyList.get(3))
+                    }
+                    else{
+                        List<Animal>
+                    }
+
+                }
+            }
+        }
+
+
+    }
+
+    public void grassEating( Animal animal){
+
+    }
+
+    public void reproduction(AbstractWorld map, Vector2d position, Animal animal1, Animal animal2){
+
+
+    }
+
 
     public void addRandomGrass(AbstractWorld map, int initGrassNumber) {
         int i = 0;
@@ -126,24 +162,28 @@ public class Simulator {
 
         //changeOrientation + move
 
-        for (Animal animal : map.animals.values()) {
-            int newGeneIndex;
-            if(parameters.getBehaviour() == 1){ // pełna predyscynacja
-                newGeneIndex = animal.currentGeneIndex;
-            }
-            else{ // nieco szaleństwa
-                int rand = generator.nextInt(10);
+        for (List<Animal> animalsAtposition : map.animals.values()) {
 
-                if(rand < 8){
+            for(Animal animal: animalsAtposition){
+                int newGeneIndex;
+                if(parameters.getBehaviour() == 1){ // pełna predyscynacja
                     newGeneIndex = animal.currentGeneIndex;
                 }
-                else{
-                    newGeneIndex = generator.nextInt(parameters.getGenotypeLength());
+                else{ // nieco szaleństwa
+                    int rand = generator.nextInt(10);
+
+                    if(rand < 8){
+                        newGeneIndex = animal.currentGeneIndex;
+                    }
+                    else{
+                        newGeneIndex = generator.nextInt(parameters.getGenotypeLength());
+                    }
                 }
+
+                animal.changeOrientation(animal.getGenotype().get(newGeneIndex));
+                animal.move();
             }
 
-            animal.changeOrientation(animal.getGenotype().get(newGeneIndex));
-            animal.move();
 
         }
 

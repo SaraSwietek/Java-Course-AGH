@@ -27,7 +27,7 @@ public class World {
 
 //        System.out.println(pet3.getGenotypeInt());
 
-        Simulator simulator = new Simulator(map);
+//        Simulator simulator = new Simulator(map);
 //        System.out.println(simulator.getGrasses());
 //        System.out.println(simulator.getAnimals());
 
@@ -48,6 +48,14 @@ public class World {
 //        Vector2d[] deathPlace = sorted.keySet().toArray(new Vector2d[(int)(sorted.size())]);
 //        System.out.println(Arrays.toString(deathPlace));
 
+
+        Map<Vector2d,Integer> an = new LinkedHashMap<>();
+        Vector2d pos = new Vector2d(1,1);
+        an.put(pos, 1);
+        an.put(pos, 2);
+
+        System.out.println(an);
+        System.out.println(an.get(pos));
 
 
 

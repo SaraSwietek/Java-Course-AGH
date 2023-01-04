@@ -1,7 +1,7 @@
 {
-  "width": 10,
-  "height": 10,
-  "grassStartNumber": 50,
+  "width": 50,
+  "height": 50,
+  "grassStartNumber": 30,
   "grassEnergyProfit": 2,
   "grassDailyGrowthNumber": 2,
   "animalsStartNumber": 2,
@@ -15,5 +15,5 @@
   "behaviour": 2,
   "mutationKind": 2,
   "grassGrowing": 2,
-  "mapVariant": 1
+  "mapVariant": 2
 }

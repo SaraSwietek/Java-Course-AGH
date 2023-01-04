@@ -1,5 +1,7 @@
 package org.example;
 
+import javafx.application.Application;
+
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -61,7 +63,7 @@ public class World {
 
         //System.out.println(an);
         //System.out.println(an.get(pos));
-
+        Application.launch(App.class, args);
 
 
 

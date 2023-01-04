@@ -162,7 +162,7 @@ public class ParametersLoader {
     }
 
     public int getGenotypeLength() {
-        return height;
+        return genotypeLength;
     }
 
     public void setGenotypeLength(int genotypeLength) {

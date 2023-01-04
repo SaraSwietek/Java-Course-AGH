@@ -204,37 +204,18 @@ public class Simulator {
     }
 
     public Simulator(AbstractWorld map) throws FileNotFoundException {
-//        addRandomGrass(map, parameters.getGrassStartNumber());
-//        System.out.println(map.getGrasses());
-//
-//        //JAK TWORZYMY NOWY WEKTOR TO JEST NOWYM KLUCZEM NAWET NA TEJ SAMEJ POZYCJI
-//        Vector2d vector = new Vector2d(2, 10);
-//        Animal pet1 = new Animal(map, vector);
-//        Animal pet2 = new Animal(map, vector);
-//        map.place(pet1);
-//        map.place(pet2);
-//        System.out.println(map.getAnimals());
-//        reproduction(map, pet1, pet2 );
-//        System.out.println(map.getAnimals());
-
-
-
-        addRandomAnimals(map, parameters.getAnimalsStartNumber());
         addRandomGrass(map, parameters.getGrassStartNumber());
-        //for (List<Animal> animal : map.animals.values()) {
-        //    System.out.println(animal);
+        addRandomAnimals(map, parameters.getAnimalsStartNumber());
+
+        //eating grass
+        //reproduction
+        //grass growing
+        //animal decreasing energy
+        //this.day++;
         //}
+    }
 
-        //for(int i=0; i<10; i++){
-        //delete dead animals
-        //changeOrientation();
-        //addRandomGrass(map, parameters.getGrassStartNumber());
-        //addRandomAnimals(map, parameters.getAnimalsStartNumber());
-        //for(int i=0; i<10; i++){
-        //delete dead animals
-
-        //changeOrientation + move
-
+    public void simulate(AbstractWorld map) throws FileNotFoundException {
         for (List<Animal> animalsAtposition : map.animals.values()) {
 
             for(Animal animal: animalsAtposition){
@@ -255,24 +236,13 @@ public class Simulator {
 
                 animal.changeOrientation(animal.getGenotype().get(newGeneIndex));
                 animal.move();
-                fight(map,animal.getPosition());
-            }
+//                fight(map, animal.getPosition());
+                System.out.println(animal.getPosition());            }
 
 
         }
 
-
-        addRandomGrass(map, parameters.getGrassDailyGrowthNumber());
-        System.out.println(map.getGrasses());
-
-        //this.day++;
-        //}
-        //eating grass
-        //reproduction
-        //grass growing
-        //animal decreasing energy
-        //this.day++;
-        //}
+        System.out.println(map.animals.values());
     }
 
 

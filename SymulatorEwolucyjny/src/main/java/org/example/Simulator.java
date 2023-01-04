@@ -51,28 +51,60 @@ public class Simulator {
     }
 
 
-    public void fight(AbstractWorld map, Vector2d position){
+    public void fight(AbstractWorld map, Vector2d position) throws FileNotFoundException {
 
 //        ustalenie czy jest trawa i czy są zwierzęta na pozycji position w mapie map
         // rozstrzygnięcie które zwierze je trawę i które się ze sobą rozmnażają
         Animal happyAnimal, secoundHappyAnimal;
+        List<Animal> energyDecreasingList = map.animals.get(position).stream().
+                sorted(Comparator.comparing(Animal::getEnergy).reversed()).toList();
+        List<Animal> ageDecreasingList = map.animals.get(position).stream().
+                sorted(Comparator.comparing(Animal::getDays).reversed()).toList();
+        List<Animal> childrenDecreasingList = map.animals.get(position).stream().
+                sorted(Comparator.comparing(Animal::getChildren).reversed()).toList();
+
 
         if(map.animals.containsKey(position)){
             if(map.grasses.containsKey(position)){
-                if(map.animals.get(position).size() == 1){
-                    //grassEating(map.animals.get(position).get(0));
+                if(map.animals.get(position).size() == 1){ // jedno zwierze - tylko trawa
+                    grassEating(map, map.animals.get(position).get(0));
                 }
-                else{
-//                    map.animals.get(position).stream().max(Comparator.comparing(Animal::getEnergy));
-                    List<Animal> energyList = map.animals.get(position).stream().
-                                                    sorted(Comparator.comparing(Animal::getEnergy).reversed()).toList();
+                else if (map.animals.get(position).size() == 2){ // dwa zwierzęta
+                    reproduction(map, map.animals.get(position).get(0), map.animals.get(position).get(1));
 
-                    if(energyList.get(0) != energyList.get(1)){
-                        //grassEating(energyList.get(0));
-                        if(map.animals.get(position).size() > 2 && energyList.get(0) == energyList.get(3));
+                }
+                else{ // więcej niż dwa zwierzęta
+
+                    if(energyDecreasingList.get(0) != energyDecreasingList.get(1)){ // różna energia conajmniej dwa zwierzęta
+                        grassEating(map, energyDecreasingList.get(0));
+
+                        if( energyDecreasingList.get(1) != energyDecreasingList.get(2)){
+
+                            reproduction(map, energyDecreasingList.get(0), energyDecreasingList.get(1));
+
+                        }
+                        else{
+
+                            if( ageDecreasingList.get(1) != ageDecreasingList.get(2)){
+                                reproduction(map, ageDecreasingList.get(0), ageDecreasingList.get(1));
+                            }
+                            else{
+                                reproduction(map, childrenDecreasingList.get(0), childrenDecreasingList.get(1));
+                            }
+                        }
                     }
-                    else{
-                        //List<Animal>
+                    else{ // conajmniej dwa zwięrzęta o tej samej energii
+
+                        if(ageDecreasingList.get(0) != ageDecreasingList.get(1)){ // różny wiek
+                            grassEating(map, ageDecreasingList.get(0));
+
+                        }
+                        else{ // ten sam wiek
+
+                            grassEating(map, childrenDecreasingList.get(0));
+
+                        }
+
                     }
 
                 }
@@ -172,23 +204,23 @@ public class Simulator {
     }
 
     public Simulator(AbstractWorld map) throws FileNotFoundException {
+//        addRandomGrass(map, parameters.getGrassStartNumber());
+//        System.out.println(map.getGrasses());
+//
+//        //JAK TWORZYMY NOWY WEKTOR TO JEST NOWYM KLUCZEM NAWET NA TEJ SAMEJ POZYCJI
+//        Vector2d vector = new Vector2d(2, 10);
+//        Animal pet1 = new Animal(map, vector);
+//        Animal pet2 = new Animal(map, vector);
+//        map.place(pet1);
+//        map.place(pet2);
+//        System.out.println(map.getAnimals());
+//        reproduction(map, pet1, pet2 );
+//        System.out.println(map.getAnimals());
+
+
+
+        addRandomAnimals(map, parameters.getAnimalsStartNumber());
         addRandomGrass(map, parameters.getGrassStartNumber());
-        System.out.println(map.getGrasses());
-
-        //JAK TWORZYMY NOWY WEKTOR TO JEST NOWYM KLUCZEM NAWET NA TEJ SAMEJ POZYCJI
-        Vector2d vector = new Vector2d(2, 10);
-        Animal pet1 = new Animal(map, vector);
-        Animal pet2 = new Animal(map, vector);
-        map.place(pet1);
-        map.place(pet2);
-        System.out.println(map.getAnimals());
-        reproduction(map, pet1, pet2 );
-        System.out.println(map.getAnimals());
-
-
-
-        //addRandomAnimals(map, parameters.getAnimalsStartNumber());
-
         //for (List<Animal> animal : map.animals.values()) {
         //    System.out.println(animal);
         //}
@@ -223,14 +255,12 @@ public class Simulator {
 
                 animal.changeOrientation(animal.getGenotype().get(newGeneIndex));
                 animal.move();
+                fight(map,animal.getPosition());
             }
 
 
         }
 
-        //eating grass
-        //reproduction
-        //grass growing
 
         addRandomGrass(map, parameters.getGrassDailyGrowthNumber());
         System.out.println(map.getGrasses());

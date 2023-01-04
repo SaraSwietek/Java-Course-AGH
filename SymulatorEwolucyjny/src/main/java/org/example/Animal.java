@@ -131,4 +131,8 @@ public class Animal implements IMapElement {
     public MapDirection getOrientation() {
         return orientation;
     }
+
+    public int getDays() {
+        return days;
+    }
 }

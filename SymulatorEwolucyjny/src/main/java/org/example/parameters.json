@@ -4,7 +4,7 @@
   "grassStartNumber": 30,
   "grassEnergyProfit": 2,
   "grassDailyGrowthNumber": 2,
-  "animalsStartNumber": 2,
+  "animalsStartNumber": 20,
   "animalsStartEnergy": 20,
   "animalsStepEnergyLoss" : 2,
   "copulationMinimumEnergy": 15,

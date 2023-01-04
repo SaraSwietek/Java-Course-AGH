@@ -21,6 +21,12 @@ abstract public class AbstractWorld implements IWorldMap{
         this.height = parameters.getHeight();
         this.lowerLeft = new Vector2d(0, 0);
         this.upperRight = new Vector2d(width, height);
+        for(int i=0; i<width; i++){
+            for(int j=0; j<height; j++){
+                Vector2d position = new Vector2d(i,j);
+                this.deathCount.put(position, 0);
+            }
+        }
 
     }
 

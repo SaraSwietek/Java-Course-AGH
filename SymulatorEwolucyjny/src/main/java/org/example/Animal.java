@@ -36,8 +36,8 @@ public class Animal implements IMapElement {
 
         int z = rand.nextInt(MapDirection.values().length);
         this.orientation = MapDirection.values()[z];
-        this.days = 0;
-        this.children = 0;
+        this.days = 1;
+        this.children = 1;
         this.position = parent1.getPosition();
         this.energy = 2*parameters.getMakingChildCost();//parent1.getEnergy() / 4 + parent2.getEnergy() / 4;
         this.genom = new Genotype(parent1, parent2);
@@ -49,7 +49,8 @@ public class Animal implements IMapElement {
     public void changeOrientation(int currentGene){
         for(int i=0; i<currentGene; i++)
             this.orientation = this.orientation.next();
-        this.changeEnergy(-parameters.getAnimalsStepEnergyLoss()); // zmienić na parametr
+        this.changeEnergy(-parameters.getAnimalsStepEnergyLoss());
+        this.days++;
     }
 
     public void move() {
@@ -75,7 +76,7 @@ public class Animal implements IMapElement {
 //    }
 
     public String toString() {
-        return this.getGenotype().toString();
+        return Integer.toString(this.days);
     }
 
     public ArrayList<Integer> getGenotype(){

@@ -53,23 +53,24 @@ public class Simulator {
 
     public void fight(AbstractWorld map, Vector2d position) throws FileNotFoundException {
 
-//        ustalenie czy jest trawa i czy są zwierzęta na pozycji position w mapie map
-        // rozstrzygnięcie które zwierze je trawę i które się ze sobą rozmnażają
-        Animal happyAnimal, secoundHappyAnimal;
-        List<Animal> energyDecreasingList = map.animals.get(position).stream().
-                sorted(Comparator.comparing(Animal::getEnergy).reversed()).toList();
-        List<Animal> ageDecreasingList = map.animals.get(position).stream().
-                sorted(Comparator.comparing(Animal::getDays).reversed()).toList();
-        List<Animal> childrenDecreasingList = map.animals.get(position).stream().
-                sorted(Comparator.comparing(Animal::getChildren).reversed()).toList();
-
 
         if(map.animals.containsKey(position)){
+
+            List<Animal> energyDecreasingList = map.animals.get(position).stream().
+                    sorted(Comparator.comparing(Animal::getEnergy).reversed()).toList();
+            List<Animal> ageDecreasingList = map.animals.get(position).stream().
+                    sorted(Comparator.comparing(Animal::getDays).reversed()).toList();
+            List<Animal> childrenDecreasingList = map.animals.get(position).stream().
+                    sorted(Comparator.comparing(Animal::getChildren).reversed()).toList();
+
+
             if(map.grasses.containsKey(position)){
+
                 if(map.animals.get(position).size() == 1){ // jedno zwierze - tylko trawa
                     grassEating(map, map.animals.get(position).get(0));
                 }
                 else if (map.animals.get(position).size() == 2){ // dwa zwierzęta
+
                     reproduction(map, map.animals.get(position).get(0), map.animals.get(position).get(1));
 
                 }
@@ -83,7 +84,7 @@ public class Simulator {
                             reproduction(map, energyDecreasingList.get(0), energyDecreasingList.get(1));
 
                         }
-                        else{
+                        else{ // taka sama energia
 
                             if( ageDecreasingList.get(1) != ageDecreasingList.get(2)){
                                 reproduction(map, ageDecreasingList.get(0), ageDecreasingList.get(1));
@@ -119,6 +120,13 @@ public class Simulator {
         animal.changeEnergy(parameters.getGrassEnergyProfit());
         //usunac trawe
         map.grasses.remove(animal.getPosition());
+    }
+
+    public void removeDeathAnimals(AbstractWorld map){
+
+        for(Vector2d position: map.animals.keySet()){ // dorzucić dodawanie do listy śmierci
+            map.animals.get(position).removeIf(animal -> animal.getEnergy() <= 0);
+        }
     }
 
     public void reproduction(AbstractWorld map, Animal animal1, Animal animal2) throws FileNotFoundException {
@@ -216,6 +224,9 @@ public class Simulator {
     }
 
     public void simulate(AbstractWorld map) throws FileNotFoundException {
+
+        removeDeathAnimals(map);
+        //chodzenie
         for (List<Animal> animalsAtposition : map.animals.values()) {
 
             for(Animal animal: animalsAtposition){
@@ -236,11 +247,20 @@ public class Simulator {
 
                 animal.changeOrientation(animal.getGenotype().get(newGeneIndex));
                 animal.move();
-//                fight(map, animal.getPosition());
+
                 System.out.println(animal.getPosition());            }
 
 
         }
+
+//        for( int i=0; i<parameters.getHeight(); i++ ){
+//            for(int j=0; j<parameters.getWidth(); j++){
+//                Vector2d position = new Vector2d(i,j);
+//                fight(map, position);
+//            }
+//        }
+
+        addRandomGrass(map,parameters.getGrassDailyGrowthNumber());
 
         System.out.println(map.animals.values());
     }

@@ -28,7 +28,7 @@ public class HellMap extends AbstractWorld{
         if (pet.position.x > width || pet.position.x < 0 || pet.position.y < 0 || pet.position.y > height)
         {
             pet.position = generateRandomPosition();
-            pet.changeEnergy(-2); // zmienić na parametr
+            pet.changeEnergy(-parameters.getAnimalsStepEnergyLoss()); // zmienić na parametr
         }
     }
 

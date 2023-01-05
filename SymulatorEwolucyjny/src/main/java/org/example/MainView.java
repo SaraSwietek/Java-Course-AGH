@@ -86,4 +86,6 @@ public class MainView extends VBox {
                             g.fillRoundRect(x,y,1,1,1,1);
                         }
             }
-        }}}
+        }
+    }
+}

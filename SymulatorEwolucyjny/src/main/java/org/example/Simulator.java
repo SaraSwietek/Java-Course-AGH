@@ -36,10 +36,10 @@ public class Simulator {
                             list.add(sampleAnimal);
                             map.animals.put(position, list);
                         }
-                        //ArrayList<Animal> list;
-                        //list = map.animals.get(position);
-                        //list.add(sampleAnimal);
-                        //map.animals.put(position, list);
+
+//                        list = map.animals.get(position);
+//                        list.add(sampleAnimal);
+//                        map.animals.put(position, list);
                         i++;
 
                     }
@@ -63,53 +63,54 @@ public class Simulator {
             List<Animal> childrenDecreasingList = map.animals.get(position).stream().
                     sorted(Comparator.comparing(Animal::getChildren).reversed()).toList();
 
+            System.out.println(energyDecreasingList);
 
-            if(map.grasses.containsKey(position)){
-
-                if(map.animals.get(position).size() == 1){ // jedno zwierze - tylko trawa
-                    grassEating(map, map.animals.get(position).get(0));
-                }
-                else if (map.animals.get(position).size() == 2){ // dwa zwierzęta
-
-                    reproduction(map, map.animals.get(position).get(0), map.animals.get(position).get(1));
-
-                }
-                else{ // więcej niż dwa zwierzęta
-
-                    if(energyDecreasingList.get(0) != energyDecreasingList.get(1)){ // różna energia conajmniej dwa zwierzęta
-                        grassEating(map, energyDecreasingList.get(0));
-
-                        if( energyDecreasingList.get(1) != energyDecreasingList.get(2)){
-
-                            reproduction(map, energyDecreasingList.get(0), energyDecreasingList.get(1));
-
-                        }
-                        else{ // taka sama energia
-
-                            if( ageDecreasingList.get(1) != ageDecreasingList.get(2)){
-                                reproduction(map, ageDecreasingList.get(0), ageDecreasingList.get(1));
-                            }
-                            else{
-                                reproduction(map, childrenDecreasingList.get(0), childrenDecreasingList.get(1));
-                            }
-                        }
-                    }
-                    else{ // conajmniej dwa zwięrzęta o tej samej energii
-
-                        if(ageDecreasingList.get(0) != ageDecreasingList.get(1)){ // różny wiek
-                            grassEating(map, ageDecreasingList.get(0));
-
-                        }
-                        else{ // ten sam wiek
-
-                            grassEating(map, childrenDecreasingList.get(0));
-
-                        }
-
-                    }
-
-                }
-            }
+//            if(map.grasses.containsKey(position)){
+//
+//                if(map.animals.get(position).size() == 1){ // jedno zwierze - tylko trawa
+//                    grassEating(map, map.animals.get(position).get(0));
+//                }
+//                else if (map.animals.get(position).size() == 2){ // dwa zwierzęta
+//
+//                    reproduction(map, map.animals.get(position).get(0), map.animals.get(position).get(1));
+//
+//                }
+//                else{ // więcej niż dwa zwierzęta
+//
+//                    if(energyDecreasingList.get(0) != energyDecreasingList.get(1)){ // różna energia conajmniej dwa zwierzęta
+//                        grassEating(map, energyDecreasingList.get(0));
+//
+//                        if( energyDecreasingList.get(1) != energyDecreasingList.get(2)){
+//
+//                            reproduction(map, energyDecreasingList.get(0), energyDecreasingList.get(1));
+//
+//                        }
+//                        else{ // taka sama energia
+//
+//                            if( ageDecreasingList.get(1) != ageDecreasingList.get(2)){
+//                                reproduction(map, ageDecreasingList.get(0), ageDecreasingList.get(1));
+//                            }
+//                            else{
+//                                reproduction(map, childrenDecreasingList.get(0), childrenDecreasingList.get(1));
+//                            }
+//                        }
+//                    }
+//                    else{ // conajmniej dwa zwięrzęta o tej samej energii
+//
+//                        if(ageDecreasingList.get(0) != ageDecreasingList.get(1)){ // różny wiek
+//                            grassEating(map, ageDecreasingList.get(0));
+//
+//                        }
+//                        else{ // ten sam wiek
+//
+//                            grassEating(map, childrenDecreasingList.get(0));
+//
+//                        }
+//
+//                    }
+//
+//                }
+//            }
         }
 
 
@@ -204,7 +205,7 @@ public class Simulator {
 
                 Grass sampleGrass = new Grass(map, new Vector2d(x, y));
                 if (map.place(sampleGrass)) {
-                    //map.grasses.put(position, sampleGrass);
+                    map.grasses.put(position, sampleGrass);
                     i++;
                 }
             }
@@ -248,7 +249,7 @@ public class Simulator {
                 animal.changeOrientation(animal.getGenotype().get(newGeneIndex));
                 animal.move();
 
-                System.out.println(animal.getPosition());            }
+            }
 
 
         }
@@ -256,10 +257,12 @@ public class Simulator {
 //        for( int i=0; i<parameters.getHeight(); i++ ){
 //            for(int j=0; j<parameters.getWidth(); j++){
 //                Vector2d position = new Vector2d(i,j);
+////                System.out.println(map.animals.get(position));
+//
 //                fight(map, position);
 //            }
 //        }
-
+        System.out.println(map.grasses.values());
         addRandomGrass(map,parameters.getGrassDailyGrowthNumber());
 
         System.out.println(map.animals.values());

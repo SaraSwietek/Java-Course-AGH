@@ -1,9 +1,9 @@
 {
-  "width": 10,
-  "height": 10,
+  "width": 20,
+  "height": 20,
   "grassStartNumber": 10,
-  "grassEnergyProfit": 2,
-  "grassDailyGrowthNumber": 2,
+  "grassEnergyProfit": 20,
+  "grassDailyGrowthNumber": 10,
   "animalsStartNumber": 10,
   "animalsStartEnergy": 20,
   "animalsStepEnergyLoss" : 2,

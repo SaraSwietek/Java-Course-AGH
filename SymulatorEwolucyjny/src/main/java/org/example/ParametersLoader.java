@@ -43,6 +43,7 @@ public class ParametersLoader {
         if(this.width <= 0){ throw new IllegalArgumentException("Invalid map width");}
         if(this.height <= 0){ throw new IllegalArgumentException("Invalid map height");}
         if(this.grassStartNumber <= 0){ throw new IllegalArgumentException("Invalid grass start number");}
+        if(this.grassStartNumber > this.width*this.height){ throw new IllegalArgumentException("Invalid grass start number");}
         if(this.grassEnergyProfit <= 0){ throw new IllegalArgumentException("Invalid grass energy profit");}
         if(this.grassDailyGrowthNumber<= 0){ throw new IllegalArgumentException("Invalid grass daily growth number");}
         if(this.animalsStartNumber <= 0){ throw new IllegalArgumentException("Invalid animals start number");}

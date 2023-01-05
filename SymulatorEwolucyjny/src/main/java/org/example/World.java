@@ -12,15 +12,10 @@ import static java.util.stream.Collectors.toMap;
 public class World {
     public static void main(String[] args) throws FileNotFoundException {
 
-        SphereMap map = new SphereMap(10, 10);
 
-
-          Simulator simulator = new Simulator(map);
+        //Simulator simulator = new Simulator(map);
 
         Application.launch(App.class, args);
-
-
-
 
     }
 }

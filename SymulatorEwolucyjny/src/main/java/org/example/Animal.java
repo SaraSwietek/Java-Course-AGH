@@ -76,7 +76,7 @@ public class Animal implements IMapElement {
 //    }
 
     public String toString() {
-        return Integer.toString(this.days);
+        return Integer.toString(this.energy);
     }
 
     public ArrayList<Integer> getGenotype(){

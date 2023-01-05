@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Objects;
+
 public class Vector2d {
     public int x;
     public int y;
@@ -47,12 +49,26 @@ public class Vector2d {
         return new Vector2d(Math.min(x, other.x), Math.min(y, other.y));
     }
 
-    public boolean equals(Object other) {
-        if (this == other)
-            return true;
-        if (!(other instanceof Vector2d))
-            return false;
-        Vector2d that = (Vector2d) other;
-        return x == that.x && y == that.y;
+//    public boolean equals(Object other) {
+//        if (this == other)
+//            return true;
+//        if (!(other instanceof Vector2d))
+//            return false;
+//        Vector2d that = (Vector2d) other;
+//        return x == that.x && y == that.y;
+//    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector2d vector2d = (Vector2d) o;
+        return x == vector2d.x &&
+                y == vector2d.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

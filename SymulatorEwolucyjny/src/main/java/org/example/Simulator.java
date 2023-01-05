@@ -247,7 +247,7 @@ public class Simulator {
 
     public void simulate(AbstractWorld map) throws FileNotFoundException {
 
-        grassEating2(map);
+        //grassEating2(map);
         removeDeathAnimals(map);
 
         //chodzenie

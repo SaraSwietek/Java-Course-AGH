@@ -24,6 +24,8 @@ public class MainView extends VBox {
 
     private Button stopButton;
     private Button startButton;
+    private Button restartButton;
+    private Button pauseButton;
     private Canvas canvas;
     private Affine affine;
     ParametersLoader parameters = ParametersLoader.loadPropFromFile();
@@ -38,9 +40,12 @@ public class MainView extends VBox {
 
 
         //--------------
-        this.stopButton = new Button("stop");
         this.startButton = new Button("start");
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(500),this::doStep));
+        this.restartButton = new Button("restart");
+        this.pauseButton = new Button("pause");
+        this.stopButton = new Button("stop");
+
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(1000),this::doStep));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
 
 
@@ -60,13 +65,21 @@ public class MainView extends VBox {
             timeline.play();
         });
 
+        this.restartButton.setOnAction(actionEvent -> {
+            timeline.play();
+        });
+
+        this.pauseButton.setOnAction(actionEvent -> {
+            timeline.pause();
+        });
+
         this.stopButton.setOnAction(actionEvent -> {
             timeline.stop();
         });
 
 
         this.canvas = new Canvas(400, 400);
-        this.getChildren().addAll(this.stopButton, this.startButton, this.canvas);
+        this.getChildren().addAll(this.startButton, this.pauseButton, this.restartButton, this.stopButton, this.canvas);
         this.affine = new Affine();
         this.affine.appendScale(400/parameters.getWidth(), 400/parameters.getHeight());
 
@@ -79,6 +92,10 @@ public class MainView extends VBox {
             throw new RuntimeException(e);
         }
         draw();
+        if(map.animals.isEmpty()){
+            timeline.stop();
+        }
+
 
     }
 
@@ -97,8 +114,26 @@ public class MainView extends VBox {
 
         for (Animal animal : map.animals) {
 
-            g.setFill(Color.SANDYBROWN);
-            g.fillRoundRect(animal.getPosition().x, animal.getPosition().y, 1, 1, 1, 1);
+            if(animal.getEnergy()>100){
+                g.setFill(Color.rgb(51,37,3));
+                g.fillRoundRect(animal.getPosition().x, animal.getPosition().y, 1, 1, 1, 1);
+            } else if (animal.getEnergy()>80) {
+                g.setFill(Color.rgb(69,52,10));
+                g.fillRoundRect(animal.getPosition().x, animal.getPosition().y, 1, 1, 1, 1);
+            } else if (animal.getEnergy()>60) {
+                g.setFill(Color.rgb(99, 85, 50));
+                g.fillRoundRect(animal.getPosition().x, animal.getPosition().y, 1, 1, 1, 1);
+            } else if (animal.getEnergy()>40) {
+                g.setFill(Color.rgb(122, 108, 72));
+                g.fillRoundRect(animal.getPosition().x, animal.getPosition().y, 1, 1, 1, 1);
+            } else if (animal.getEnergy()>20) {
+                g.setFill(Color.rgb(145, 133, 100));
+                g.fillRoundRect(animal.getPosition().x, animal.getPosition().y, 1, 1, 1, 1);
+            } else {
+                g.setFill(Color.rgb(196,182,145));
+                g.fillRoundRect(animal.getPosition().x, animal.getPosition().y, 1, 1, 1, 1);
+            }
+
 
         }
     }

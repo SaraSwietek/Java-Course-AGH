@@ -240,15 +240,8 @@ public class Simulator {
         addRandomGrass(map, parameters.getGrassStartNumber());
         addRandomAnimals(map, parameters.getAnimalsStartNumber());
 
-        int e=0;
-        for(Animal animal: map.animals){
-            System.out.print(e + " ");
-            System.out.println(animal);
-            e++;
-        }
-//        System.out.println(map.grasses.keySet());
-//        System.out.println(map.deathCount.values());
-//        System.out.println(map.deathCount.size());
+
+
         for( int i=0; i<parameters.getHeight(); i++ ){
             for(int j=0; j<parameters.getWidth(); j++){
                 Vector2d position = new Vector2d(i,j);
@@ -286,15 +279,6 @@ public class Simulator {
 
 
         addRandomGrass(map,parameters.getGrassDailyGrowthNumber());
-//        System.out.println(map.grasses.keySet());
-        int i=0;
-        for(Animal animal: map.animals){
-            System.out.print(i + " ");
-            System.out.println(animal);
-            i++;
-        }
-//        System.out.println(map.deathCount);
-//        System.out.println(map.deathCount.size());
 
     }
 

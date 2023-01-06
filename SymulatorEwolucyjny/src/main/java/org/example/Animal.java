@@ -95,18 +95,7 @@ public class Animal implements IMapElement {
 
     }
 
-//    public String toString() {
-//        return switch(this.orientation) {
-//            case NORTH -> "N";
-//            case NORTHEAST -> "NE";
-//            case EAST -> "E";
-//            case SOUTHEAST -> "SE";
-//            case SOUTH -> "S";
-//            case SOUTHWEST -> "SW";
-//            case WEST -> "W";
-//            case NORTHWEST -> "NW";
-//        };
-//    }
+
 
     public String toString() {
 
@@ -122,7 +111,7 @@ public class Animal implements IMapElement {
         return genom.getGenotype();
     }
 
-    public Integer getGenotypeInt() //  po  co ????
+    public Integer getGenotypeInt()
     {
         ArrayList<Integer> g = getGenotype();
         String gString = "";

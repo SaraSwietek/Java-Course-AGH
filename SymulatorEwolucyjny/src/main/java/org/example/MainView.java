@@ -3,28 +3,26 @@ package org.example;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
-import java.sql.Time;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 public class MainView extends VBox {
 
     private Button stopButton;
     private Button startButton;
-    private Button restartButton;
+    private Button continueButton;
+    private Button showDominantGenotype;
+    private Button selectAnimalToTrack;
     private Button pauseButton;
     private Canvas canvas;
     private Affine affine;
@@ -41,11 +39,13 @@ public class MainView extends VBox {
 
         //--------------
         this.startButton = new Button("start");
-        this.restartButton = new Button("restart");
-        this.pauseButton = new Button("pause");
+        this.continueButton = new Button("continue");
         this.stopButton = new Button("stop");
+        this.showDominantGenotype = new Button("showDominantGenotype");
 
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(1000),this::doStep));
+
+
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(200),this::doStep));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
 
 
@@ -65,29 +65,83 @@ public class MainView extends VBox {
             timeline.play();
         });
 
-        this.restartButton.setOnAction(actionEvent -> {
+        this.continueButton.setOnAction(actionEvent -> {
             timeline.play();
         });
 
-        this.pauseButton.setOnAction(actionEvent -> {
-            timeline.pause();
-        });
 
         this.stopButton.setOnAction(actionEvent -> {
             timeline.stop();
         });
 
+        this.showDominantGenotype.setOnAction(actionEvent ->{
+            showDominantGenotype(map.animals);
+        });
+
+
+
 
         this.canvas = new Canvas(400, 400);
-        this.getChildren().addAll(this.startButton, this.pauseButton, this.restartButton, this.stopButton, this.canvas);
+        this.getChildren().addAll(this.startButton, this.continueButton, this.stopButton, this.showDominantGenotype, this.canvas);
         this.affine = new Affine();
         this.affine.appendScale(400/parameters.getWidth(), 400/parameters.getHeight());
 
     }
+
+
+
+    private void showDominantGenotype(List<Animal> animals) {
+
+        Map<Integer, Integer> genotypeCounts = new HashMap<>();
+        for (Animal animal : animals) {
+            Integer genotype = animal.getGenotypeInt();
+            int count = genotypeCounts.getOrDefault(genotype, 0); // bierze wartość dla genotype lub ustawia na 0
+            genotypeCounts.put(genotype, count + 1);
+        }
+        Integer dominantGenotype=0;
+        int maxCount = 0;
+        for (Map.Entry<Integer, Integer> entry : genotypeCounts.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                dominantGenotype = entry.getKey();
+                maxCount = entry.getValue();
+            }
+        }
+
+        // Redraw the map
+        draw(dominantGenotype);
+    }
+
+    private void draw(Integer dominantGenotype) {
+        GraphicsContext g = this.canvas.getGraphicsContext2D();
+        g.setTransform(this.affine);
+
+        g.setFill(Color.LIGHTGRAY);
+        g.fillRect(0, 0, parameters.getWidth(), parameters.getHeight());
+
+        for (Grass grass : map.grasses.values()) {
+            g.setFill(Color.GREEN);
+            g.fillRect(grass.getPosition().x, grass.getPosition().y, 1, 1);
+        }
+
+        for (Animal animal : map.animals) {
+
+            Color fillColor;
+            if (animal.getGenotypeInt().equals(dominantGenotype)) {
+                fillColor = Color.RED;
+            } else {
+                fillColor = Color.BLUE;
+            }
+
+            g.setFill(fillColor);
+            g.fillRoundRect(animal.getPosition().x, animal.getPosition().y, 1, 1, 1, 1);
+        }
+    }
+
+
     private void doStep(ActionEvent actionEvent) {
         try {
             this.simulator.simulate(map);
-            System.out.println(this.parameters.getWidth());
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

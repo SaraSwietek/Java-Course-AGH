@@ -9,14 +9,15 @@ abstract public class AbstractWorld implements IWorldMap{
     protected int height;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
-    protected Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
+    //    protected Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
+    protected List<Animal> animals = new LinkedList<>();
     protected Map<Vector2d, Grass> grasses = new LinkedHashMap<>();
     protected Map<Vector2d, Integer> deathCount = new LinkedHashMap<>();
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
 
 
-    public AbstractWorld(int width, int height) throws FileNotFoundException {
+    public AbstractWorld() throws FileNotFoundException {
         this.width = parameters.getWidth();
         this.height = parameters.getHeight();
         this.lowerLeft = new Vector2d(0, 0);
@@ -33,8 +34,12 @@ abstract public class AbstractWorld implements IWorldMap{
     @Override
     public Object objectAt(Vector2d position) {
 
-        if (animals.containsKey(position)) //containsKey returns True if that element is mapped in the map
-            return animals.get(position);
+
+        for (Animal animal : animals) {
+            if (animal.getPosition().equals(position)) {
+                return animal;
+            }
+        }
 
         if (grasses.containsKey(position))
             return grasses.get(position); //get fetches the value mapped by a particular key mentioned in the parameter
@@ -47,24 +52,21 @@ abstract public class AbstractWorld implements IWorldMap{
         return objectAt(position) != null;
     }
 
+
+
     public boolean place(IMapElement element) {
         Vector2d newElementPosition = element.getPosition();
         if (newElementPosition.follows(lowerLeft) && newElementPosition.precedes(upperRight)){ //jesli miesci sie w ramach mapy
-            if(element instanceof Animal){
-                ArrayList<Animal> list;
-
-                if(this.animals.get(newElementPosition)==null){
-                    list = new ArrayList<Animal>();
-                    list.add((Animal) element);
-                }
-                else{
-                    list = this.animals.get(newElementPosition);
-                    list.add((Animal) element);
-                }
-                this.animals.put(newElementPosition, list);
+            if (element instanceof Animal) {
+                animals.add((Animal) element);
             }
-            else
+            else {
+                if (this.grasses.get(newElementPosition) != null && this.grasses.get(newElementPosition) != null) {
+                    // There is already a grass at this position
+                    return false;
+                }
                 this.grasses.put(newElementPosition, (Grass) element);
+            }
 
             return true;
         }
@@ -88,4 +90,5 @@ abstract public class AbstractWorld implements IWorldMap{
     public LinkedHashMap getGrasses(){
         return (LinkedHashMap) this.grasses;
     }
+
 }

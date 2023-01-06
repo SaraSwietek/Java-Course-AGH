@@ -12,20 +12,25 @@ import java.io.FileNotFoundException;
 public class SphereMap extends AbstractWorld{
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
-    public SphereMap(int width, int height) throws FileNotFoundException {
+    public SphereMap() throws FileNotFoundException {
 
-        super(width, height);
+        super();
+
     }
 
+
+
     public void moveTo(Animal pet) { // zmienić na canMoveTo ? mamy to też w AbstractWorldzie
-        if (pet.position.x > width)
-            pet.position = new Vector2d(0, pet.position.y);
-        if (pet.position.x < 0)
-            pet.position = new Vector2d(width, pet.position.y);
-        if (pet.position.y < 0 || pet.position.y > height) {
+
+        if (pet.position.y < 0 || pet.position.y >= parameters.getHeight()) {
             pet.position = pet.position.subtract(pet.orientation.toUnitVector()); // wektor został dodany w Animalu
             pet.changeOrientation(4);
         }
+        if (pet.position.x >= parameters.getWidth())
+            pet.position = new Vector2d(0, pet.position.y);
+        if (pet.position.x < 0)
+            pet.position = new Vector2d(parameters.getWidth()-1, pet.position.y);
+
     }
 
 

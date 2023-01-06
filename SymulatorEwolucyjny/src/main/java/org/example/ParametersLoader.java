@@ -21,7 +21,7 @@ public class ParametersLoader {
     private int maxMutationCount;
     private int genotypeLength;
     private int minMutationCount;
-    private int behaviour; // 1 - pełna predysktynacja, 2 - niecoszaleństwa
+    private int behaviour; // 1 - pełna predestynacja, 2 - niecoszaleństwa
     private int mutationKind; // 1 -pełna losowość, 2 - lekka korekta
     private int grassGrowing; // 1 -trupy, 2 - równik
     private int mapVariant; // 1 -kula ziemska, 2 - piekielny portal

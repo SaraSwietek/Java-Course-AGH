@@ -14,34 +14,34 @@ public class Animal implements IMapElement {
     protected Genotype genom;
     protected Vector2d position;
     protected int currentGeneIndex;
-    IWorldMap map;
+    AbstractWorld map;
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
-    private Random rand = new Random();
+    private Random generator = new Random();
 
 
-    public Animal(IWorldMap map, Vector2d randomPosition) throws FileNotFoundException {
+    public Animal(AbstractWorld map, Vector2d randomPosition) throws FileNotFoundException {
 
-        int z = rand.nextInt(MapDirection.values().length);
+        int z = generator.nextInt(MapDirection.values().length);
         this.orientation = MapDirection.values()[z];
         this.days = 0;
         this.children = 0;
         this.position = randomPosition;
-        this.energy = 20;
+        this.energy = parameters.getAnimalsStartEnergy();
         this.genom = new Genotype();
         this.currentGeneIndex = 0;
         this.map= map;
     }
 
-    public Animal(IWorldMap map,  Animal parent1, Animal parent2) throws FileNotFoundException {
+    public Animal(AbstractWorld map,  Animal parent1, Animal parent2) throws FileNotFoundException {
 
-        int z = rand.nextInt(MapDirection.values().length);
+        int z = generator.nextInt(MapDirection.values().length);
         this.orientation = MapDirection.values()[z];
-        this.days = 1;
-        this.children = 1;
+        this.days = 0;
+        this.children = 0;
         this.position = parent1.getPosition();
         this.energy = 2*parameters.getMakingChildCost();//parent1.getEnergy() / 4 + parent2.getEnergy() / 4;
         this.genom = new Genotype(parent1, parent2);
-        int w = rand.nextInt(parameters.getGenotypeLength());
+        int w = generator.nextInt(parameters.getGenotypeLength());
         this.currentGeneIndex = w;
         this.map = map;
     }
@@ -49,17 +49,50 @@ public class Animal implements IMapElement {
     public void changeOrientation(int currentGene){
         for(int i=0; i<currentGene; i++)
             this.orientation = this.orientation.next();
+
+
+    }
+
+    public void move() {
+
+        Vector2d oldPosition = this.position;
+        this.position = this.position.add(this.orientation.toUnitVector());
+
+        map.moveTo(this);
+
+        map.animals.remove(oldPosition);
+
+        this.currentGeneIndex = getNextGeneIndex();
+
         this.changeEnergy(-parameters.getAnimalsStepEnergyLoss());
         this.days++;
     }
 
-    public void move() {
-        // if sprawdzający rodzaj mapy
-        this.position = this.position.add(this.orientation.toUnitVector());
-        map.moveTo(this);
-        if (this.currentGeneIndex == parameters.getGenotypeLength()-1)
-            this.currentGeneIndex = 0;
-        else this.currentGeneIndex++;
+    public int getNextGeneIndex(){
+
+        int newGeneIndex;
+        if(parameters.getBehaviour() == 1){ // pełna predyscynacja
+            newGeneIndex = currentGeneIndex;
+            newGeneIndex++;
+            if(newGeneIndex == parameters.getGenotypeLength())
+                newGeneIndex = 0;
+        }
+        else{ // nieco szaleństwa
+            int rand = generator.nextInt(10);
+
+            if(rand < 8){
+                newGeneIndex = currentGeneIndex;
+                newGeneIndex++;
+                if(newGeneIndex == parameters.getGenotypeLength())
+                    newGeneIndex = 0;
+            }
+            else{
+                newGeneIndex = generator.nextInt(parameters.getGenotypeLength());
+            }
+        }
+
+        return newGeneIndex;
+
     }
 
 //    public String toString() {
@@ -76,7 +109,12 @@ public class Animal implements IMapElement {
 //    }
 
     public String toString() {
-        return Integer.toString(this.energy);
+
+
+        return "Energy " + energy + " Genotype " + getGenotypeInt() + " orientation " + this.orientation
+                + " Position " + position
+                + " CurrentgeneIndex " + this.currentGeneIndex
+                + " CurrentGene "  + this.genom.getGenotype().get(currentGeneIndex);
     }
 
     public ArrayList<Integer> getGenotype(){
@@ -134,6 +172,7 @@ public class Animal implements IMapElement {
     }
 
     public int getDays() {
+
         return days;
     }
 }

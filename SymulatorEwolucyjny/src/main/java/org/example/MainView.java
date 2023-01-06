@@ -44,10 +44,13 @@ public class MainView extends VBox {
         this.timeline.setCycleCount(Timeline.INDEFINITE);
 
 
-
         this.startButton.setOnAction(actionEvent -> {
             try {
-                map = new SphereMap(parameters.getWidth(), parameters.getHeight()); //uzaleznic od param
+                if(parameters.getMapVariant() == 1)
+                    this.map = new SphereMap();
+                else
+                    this.map = new HellMap();
+
                 simulator = new Simulator(map);
 
             } catch (FileNotFoundException e) {
@@ -68,8 +71,6 @@ public class MainView extends VBox {
         this.affine.appendScale(400/parameters.getWidth(), 400/parameters.getHeight());
 
     }
-
-
     private void doStep(ActionEvent actionEvent) {
         try {
             this.simulator.simulate(map);
@@ -81,6 +82,7 @@ public class MainView extends VBox {
 
     }
 
+
     public void draw() {
         GraphicsContext g = this.canvas.getGraphicsContext2D();
         g.setTransform(this.affine);
@@ -88,21 +90,16 @@ public class MainView extends VBox {
         g.setFill(Color.LIGHTGRAY);
         g.fillRect(0, 0, parameters.getWidth(), parameters.getHeight());
 
-        for (int x = 0; x<this.map.width; x++) {
-            for (int y = 0; y < this.map.height; y++) {
-                for (Grass grass : map.grasses.values())
-                    if (grass.getPosition().equals(new Vector2d(x, y))) {
-                        g.setFill(Color.GREEN);
-                        g.fillRect(x, y, 1, 1);
-                    }
+        for (Grass grass : map.grasses.values()) {
+            g.setFill(Color.GREEN);
+            g.fillRect(grass.getPosition().x, grass.getPosition().y, 1, 1);
+        }
 
-                for (ArrayList<Animal> animals : map.animals.values())
-                    for(Animal animal : animals)
-                        if (animal.getPosition().equals(new Vector2d(x, y))) {
-                            g.setFill(Color.SANDYBROWN);
-                            g.fillRoundRect(x,y,1,1,1,1);
-                        }
-            }
+        for (Animal animal : map.animals) {
+
+            g.setFill(Color.SANDYBROWN);
+            g.fillRoundRect(animal.getPosition().x, animal.getPosition().y, 1, 1, 1, 1);
+
         }
     }
 }

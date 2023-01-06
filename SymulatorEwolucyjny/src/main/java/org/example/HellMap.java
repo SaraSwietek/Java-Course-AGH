@@ -7,9 +7,9 @@ public class HellMap extends AbstractWorld{
 
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
-    public HellMap(int width, int height) throws FileNotFoundException {
+    public HellMap() throws FileNotFoundException {
 
-        super(width, height);
+        super();
 
     }
 
@@ -25,12 +25,11 @@ public class HellMap extends AbstractWorld{
     }
 
     public void moveTo(Animal pet) { // zmienić na canMoveTo ? i jest to też w AbstractWorld
-        if (pet.position.x > width || pet.position.x < 0 || pet.position.y < 0 || pet.position.y > height)
+        if (pet.position.x >= width || pet.position.x < 0 || pet.position.y < 0 || pet.position.y >= height)
         {
             pet.position = generateRandomPosition();
-            pet.changeEnergy(-parameters.getAnimalsStepEnergyLoss()); // zmienić na parametr
+            pet.changeEnergy(-parameters.getAnimalsStepEnergyLoss());
         }
     }
 
 }
-

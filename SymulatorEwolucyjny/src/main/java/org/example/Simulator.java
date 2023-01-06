@@ -7,9 +7,8 @@ import static java.util.stream.Collectors.toMap;
 
 public class Simulator {
 
-    protected int day = 0;
 
-    private final Random generator = new Random(); // dlaczego final ?
+    private final Random generator = new Random();
 
     ParametersLoader parameters = ParametersLoader.loadPropFromFile(); //ładujemy parametry
 
@@ -26,7 +25,7 @@ public class Simulator {
                 try {
                     Animal sampleAnimal = new Animal(map, new Vector2d(x, y));
                     if (map.place(sampleAnimal)) {
-//
+
                         i++;
 
                     }
@@ -38,117 +37,121 @@ public class Simulator {
     }
 
 
-    public void fight(AbstractWorld map, Vector2d position) throws FileNotFoundException {
+    public void grassFight(AbstractWorld map, Vector2d position){
+
+        List<Animal> energyDecreasingList = map.animals.stream().
+                sorted(Comparator.comparing(Animal::getEnergy).reversed()).filter(animal -> animal.position.equals(position)).
+                toList();
+        List<Animal> ageDecreasingList = map.animals.stream().
+                sorted(Comparator.comparing(Animal::getDays).reversed()).filter(animal -> animal.position.equals(position)).
+                toList();
+        List<Animal> childrenDecreasingList = map.animals.stream().
+                sorted(Comparator.comparing(Animal::getChildren).reversed()).filter(animal -> animal.position.equals(position)).
+                toList();
 
 
-        if(map.animals.containsKey(position)){
-
-            List<Animal> energyDecreasingList = map.animals.get(position).stream().
-                    sorted(Comparator.comparing(Animal::getEnergy).reversed()).toList();
-            List<Animal> ageDecreasingList = map.animals.get(position).stream().
-                    sorted(Comparator.comparing(Animal::getDays).reversed()).toList();
-            List<Animal> childrenDecreasingList = map.animals.get(position).stream().
-                    sorted(Comparator.comparing(Animal::getChildren).reversed()).toList();
-
-            System.out.println("DECR" + energyDecreasingList);
-
-            if(map.grasses.containsKey(position)){
-
-                if(map.animals.get(position).size() == 1){ // jedno zwierze - tylko trawa
-                    grassEating(map, map.animals.get(position).get(0));
-                }
-                else if (map.animals.get(position).size() == 2){ // dwa zwierzęta
-
-                    reproduction(map, map.animals.get(position).get(0), map.animals.get(position).get(1));
-
-                }
-                else{ // więcej niż dwa zwierzęta
-
-                    if(energyDecreasingList.get(0) != energyDecreasingList.get(1)){ // różna energia conajmniej dwa zwierzęta
-                        grassEating(map, energyDecreasingList.get(0));
-
-                        if( energyDecreasingList.get(1) != energyDecreasingList.get(2)){
-
-                            reproduction(map, energyDecreasingList.get(0), energyDecreasingList.get(1));
-
-                        }
-                        else{ // taka sama energia
-
-                            if( ageDecreasingList.get(1) != ageDecreasingList.get(2)){
-                                reproduction(map, ageDecreasingList.get(0), ageDecreasingList.get(1));
-                            }
-                            else{
-                                reproduction(map, childrenDecreasingList.get(0), childrenDecreasingList.get(1));
-                            }
-                        }
-                    }
-                    else{ // conajmniej dwa zwięrzęta o tej samej energii
-
-                        if(ageDecreasingList.get(0) != ageDecreasingList.get(1)){ // różny wiek
-                            grassEating(map, ageDecreasingList.get(0));
-
-                        }
-                        else{ // ten sam wiek
-
-                            grassEating(map, childrenDecreasingList.get(0));
-
-                        }
-
-                    }
-
-                }
+        if(energyDecreasingList.get(0) != energyDecreasingList.get(1)){
+            grassEating(map, energyDecreasingList.get(0));
+        }
+        else{
+            if(ageDecreasingList.get(0) != ageDecreasingList.get(1)){
+                grassEating(map, ageDecreasingList.get(0));
+            }
+            else{
+                grassEating(map, childrenDecreasingList.get(0));
             }
         }
 
+    }
+
+    public void reproductionFight(AbstractWorld map, Vector2d position) throws FileNotFoundException {
+
+        List<Animal> energyDecreasingList = map.animals.stream().
+                sorted(Comparator.comparing(Animal::getEnergy).reversed()).
+                filter(animal -> animal.position.equals(position)).
+                toList();
+        List<Animal> ageDecreasingList = map.animals.stream().
+                sorted(Comparator.comparing(Animal::getDays).reversed()).
+                filter(animal -> animal.position.equals(position)).
+                toList();
+        List<Animal> childrenDecreasingList = map.animals.stream().
+                sorted(Comparator.comparing(Animal::getChildren).reversed()).
+                filter(animal -> animal.position.equals(position)).
+                toList();
+
+        if(energyDecreasingList.get(1) != energyDecreasingList.get(2)){
+            reproduction(map, energyDecreasingList.get(0), energyDecreasingList.get(1));
+        }
+        else{
+            if(ageDecreasingList.get(1) != ageDecreasingList.get(2)){
+                reproduction(map, ageDecreasingList.get(0), ageDecreasingList.get(1));
+            }
+            else{
+                reproduction(map, childrenDecreasingList.get(0), childrenDecreasingList.get(1));
+            }
+        }
 
     }
 
+    public void isFight(AbstractWorld map, Vector2d position) throws FileNotFoundException {
+
+        List<Animal> animalAtposition = map.animals.stream().
+                filter(animal -> animal.position.equals(position)).
+                toList();
+
+
+        if(map.grasses.containsKey(position)){ // czy jest trawa na polu
+
+            if(animalAtposition.size() == 1){ // czy jest tylko zwierze - walka o trawę niepotrzebna
+
+                grassEating(map, animalAtposition.get(0));
+            }
+            else if(animalAtposition.size() > 1){ // więcej zwierząt - walka o trawę potrzebna
+                grassFight(map, position);
+
+                if(animalAtposition.size() == 2){ // tylko dwa zwierzęta walka o reprodukcje niepotrzebna
+                    reproduction(map, animalAtposition.get(0), animalAtposition.get(1));
+                }
+                else{ // więcej zwierząt walka o reprodukcje potrzebna
+                    reproductionFight(map, position);
+                }
+            }
+        }
+        else{
+            if(animalAtposition.size() == 2){ // tylko dwa zwierzęta walka o reprodukcje niepotrzebna
+                reproduction(map, animalAtposition.get(0), animalAtposition.get(1));
+            }
+            else if(animalAtposition.size() > 2){ // więcej zwierząt walka o reprodukcje potrzebna
+                reproductionFight(map, position);
+            }
+        }
+
+    }
+
+
+
+
     public void grassEating( AbstractWorld map, Animal animal){
-        //obecnosc trawy będzie sprawdzana w walce ????
+
         animal.changeEnergy(parameters.getGrassEnergyProfit());
         //usunac trawe
         map.grasses.remove(animal.getPosition());
     }
 
-//    public void grassEating2(AbstractWorld map){
-//        Iterator<Map.Entry<Vector2d, Grass>> itr = map.grasses.entrySet().iterator();
-//        for (List<Animal> animalsAtposition : map.animals.values()) {
-//                while(itr.hasNext()){
-//                    for(Animal animal: animalsAtposition){
-//                        Map.Entry<Vector2d, Grass> entry = itr.next();
-//                        if(entry.getValue().getPosition().equals(animal.getPosition())){
-//                            animal.changeEnergy(parameters.getGrassEnergyProfit());
-//                            map.grasses.remove(entry);
-//                    }
-//                }
-//            }
-//        }
-//    }
+    public void removeDeathAnimals(AbstractWorld map){// dorzucić dodawanie do listy śmierci
 
-    public void grassEating2(AbstractWorld map){
-        LinkedHashMap<Vector2d,Grass> grassToDelete = new LinkedHashMap<>();
-
-        for (List<Animal> animalsAtposition : map.animals.values()) {
-            for(Animal animal: animalsAtposition){
-                for(Grass grass: map.grasses.values()){
-                    if(grass.getPosition().equals(animal.getPosition())){
-                        animal.changeEnergy(parameters.getGrassEnergyProfit());
-                        grassToDelete.put(grass.getPosition(),grass);
-                    }
-                }
-
-
+        List<Animal> animalsToRemove = new ArrayList<>();
+        for (Animal animal : map.animals) {
+            if (animal.getEnergy() <= 0) {
+                animalsToRemove.add(animal);
+                Integer deathCounter = map.deathCount.get(animal.getPosition());
+                deathCounter++;
+                map.deathCount.put(animal.getPosition(),deathCounter);
             }
         }
+        map.animals.removeAll(animalsToRemove);
 
-        grassToDelete.forEach((key, value) -> map.grasses.remove(key, value));
-    }
 
-    public void removeDeathAnimals(AbstractWorld map){
-
-        for(Vector2d position: map.animals.keySet()){ // dorzucić dodawanie do listy śmierci
-            map.animals.get(position).removeIf(animal -> animal.getEnergy() <= 0);
-        }
     }
 
     public void reproduction(AbstractWorld map, Animal animal1, Animal animal2) throws FileNotFoundException {
@@ -157,6 +160,8 @@ public class Simulator {
                 animal2.isEnergyMoreThan(parameters.getCopulationMinimumEnergy())){
             animal1.changeEnergy(-parameters.getMakingChildCost());
             animal2.changeEnergy(-parameters.getMakingChildCost());
+            animal1.children++;
+            animal2.children++;
 
             //Narodzone dziecko pojawia się na tym samym polu co jego rodzice -> w konstruktorze!
             //Energia dziecka to suma energii, którą utracili rodzice (konstruktor)
@@ -174,7 +179,7 @@ public class Simulator {
         int x = 0;
         int y = 0;
 
-        while (i < initGrassNumber) {
+        while (i < initGrassNumber && map.grasses.size() < parameters.getWidth()*parameters.getHeight()) {
 
             int rand = generator.nextInt(10) + 1;
 
@@ -182,16 +187,16 @@ public class Simulator {
                 //80% rownik
 
                 if (rand <= 8) {
-                    x = generator.nextInt(map.getWidth() + 1);
-                    y = (int) (generator.nextInt((int) (map.getHeight() * 0.2)) + (0.4 * map.getHeight()) + 1);
+                    x = generator.nextInt(map.getWidth());
+                    y = (int) (generator.nextInt((int) (map.getHeight() * 0.2)) + (0.4 * map.getHeight()) );
 
                 } else { //20% w innym miejscu
                     x = generator.nextInt(map.getWidth());
 
                     if (generator.nextBoolean()) {
-                        y = generator.nextInt((int) (map.getHeight() * 0.4) + 1);
+                        y = generator.nextInt((int) (map.getHeight() * 0.4) );
                     } else {
-                        y = (int) (generator.nextInt((int) (map.getHeight() * 0.4)) + (0.6 * map.getHeight()) + 1);
+                        y = (int) (generator.nextInt((int) (map.getHeight() * 0.4) + 1) + (0.6 * map.getHeight()));
                     }
 
                 }
@@ -203,33 +208,31 @@ public class Simulator {
 
                 Vector2d[] deathPlace = sorted.keySet().toArray(new Vector2d[(int) (sorted.size())]);
 
-                i = generator.nextInt((int) (sorted.size() * 0.8));
+                int j = generator.nextInt((int) (sorted.size() * 0.8));
                 if (rand <= 2) {
 
-                    x = deathPlace[i].x;
-                    y = deathPlace[i].y;
+                    x = deathPlace[j].x;
+                    y = deathPlace[j].y;
 
                 } else {
-                    i = generator.nextInt(deathPlace.length - i) + i;
+                    j = generator.nextInt(deathPlace.length - j) + j;
 
-                    x = deathPlace[i].x;
-                    y = deathPlace[i].y;
+                    x = deathPlace[j].x;
+                    y = deathPlace[j].y;
 
                 }
-
 
             }
 
             Vector2d position = new Vector2d(x, y);
 
-            if (!(map.objectAt(position) instanceof Grass)) {
 
-                Grass sampleGrass = new Grass(map, new Vector2d(x, y));
-                if (map.place(sampleGrass)) {
-                    //map.grasses.put(position, sampleGrass);
-                    i++;
-                }
+
+            Grass sampleGrass = new Grass(map, position);
+            if (map.place(sampleGrass)) {
+                i++;
             }
+
         }
     }
 
@@ -237,58 +240,62 @@ public class Simulator {
         addRandomGrass(map, parameters.getGrassStartNumber());
         addRandomAnimals(map, parameters.getAnimalsStartNumber());
 
-        //eating grass
-        //reproduction
-        //grass growing
-        //animal decreasing energy
-        //this.day++;
-        //}
+        int e=0;
+        for(Animal animal: map.animals){
+            System.out.print(e + " ");
+            System.out.println(animal);
+            e++;
+        }
+//        System.out.println(map.grasses.keySet());
+//        System.out.println(map.deathCount.values());
+//        System.out.println(map.deathCount.size());
+        for( int i=0; i<parameters.getHeight(); i++ ){
+            for(int j=0; j<parameters.getWidth(); j++){
+                Vector2d position = new Vector2d(i,j);
+                isFight(map, position);
+
+            }
+        }
+
     }
 
     public void simulate(AbstractWorld map) throws FileNotFoundException {
 
-        grassEating2(map);
         removeDeathAnimals(map);
 
-        //chodzenie
-        for (List<Animal> animalsAtposition : map.animals.values()) {
 
-            for(Animal animal: animalsAtposition){
-                int newGeneIndex;
-                if(parameters.getBehaviour() == 1){ // pełna predyscynacja
-                    newGeneIndex = animal.currentGeneIndex;
-                }
-                else{ // nieco szaleństwa
-                    int rand = generator.nextInt(10);
+        for (Animal animal : map.animals) {
 
-                    if(rand < 8){
-                        newGeneIndex = animal.currentGeneIndex;
-                    }
-                    else{
-                        newGeneIndex = generator.nextInt(parameters.getGenotypeLength());
-                    }
-                }
 
-                animal.changeOrientation(animal.getGenotype().get(newGeneIndex));
-                animal.move();
 
-            }
+            int newGeneIndex = animal.currentGeneIndex;
 
+
+            animal.changeOrientation(animal.getGenotype().get(newGeneIndex));
+            animal.move();
 
         }
 
-//        for( int i=0; i<parameters.getHeight(); i++ ){
-//            for(int j=0; j<parameters.getWidth(); j++){
-//                Vector2d position = new Vector2d(i,j);
-////                System.out.println(map.animals.get(position));
-//
-//                fight(map, position);
-//            }
-//        }
+        for( int i=0; i<parameters.getHeight(); i++ ){
+            for(int j=0; j<parameters.getWidth(); j++){
+                Vector2d position = new Vector2d(i,j);
+                isFight(map, position);
+
+            }
+        }
+
 
         addRandomGrass(map,parameters.getGrassDailyGrowthNumber());
+//        System.out.println(map.grasses.keySet());
+        int i=0;
+        for(Animal animal: map.animals){
+            System.out.print(i + " ");
+            System.out.println(animal);
+            i++;
+        }
+//        System.out.println(map.deathCount);
+//        System.out.println(map.deathCount.size());
 
-        System.out.println(map.animals.values());
     }
 
 

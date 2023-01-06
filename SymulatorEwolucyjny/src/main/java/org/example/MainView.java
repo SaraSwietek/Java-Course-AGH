@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
@@ -24,43 +26,40 @@ public class MainView extends VBox {
     private Button startButton;
     private Canvas canvas;
     private Affine affine;
-    private final Random generator = new Random();
     ParametersLoader parameters = ParametersLoader.loadPropFromFile();
     private Timeline timeline;
-    AbstractWorld map = new SphereMap(parameters.getWidth(), parameters.getHeight());
-    Simulator simulator = new Simulator(map);
+    //AbstractWorld map = new SphereMap(parameters.getWidth(), parameters.getHeight());
+    //Simulator simulator = new Simulator(map);
 
-
-    //private Simulator simulator;
+    private AbstractWorld map;
+    private Simulator simulator;
 
     public MainView() throws FileNotFoundException {
 
+
+        //--------------
         this.stopButton = new Button("stop");
         this.startButton = new Button("start");
         this.timeline = new Timeline(new KeyFrame(Duration.millis(500),this::doStep));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
 
+
+
         this.startButton.setOnAction(actionEvent -> {
+            try {
+                map = new SphereMap(parameters.getWidth(), parameters.getHeight()); //uzaleznic od param
+                simulator = new Simulator(map);
+
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
             timeline.play();
-                });
+        });
 
         this.stopButton.setOnAction(actionEvent -> {
             timeline.stop();
         });
-
-
-        //Simulator simulator = new Simulator(map);
-
-//        this.stepButton.setOnAction(actionEvent -> {
-//
-//            try {
-//                simulator.simulate(map);
-//            } catch (FileNotFoundException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//            draw();
-//        });
 
 
         this.canvas = new Canvas(400, 400);
@@ -68,31 +67,18 @@ public class MainView extends VBox {
         this.affine = new Affine();
         this.affine.appendScale(400/parameters.getWidth(), 400/parameters.getHeight());
 
-
-
-    }
-
-    private void handleStart(ActionEvent actionEvent) {
-        start();
     }
 
 
     private void doStep(ActionEvent actionEvent) {
         try {
-            simulator.simulate(map);
+            this.simulator.simulate(map);
+            System.out.println(this.parameters.getWidth());
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         draw();
 
-    }
-
-    public void start(){
-        this.timeline.play();
-    }
-
-    public void stop(){
-        this.timeline.stop();
     }
 
     public void draw() {

@@ -76,13 +76,13 @@ public class App extends Application {
         GridPane.setConstraints(labels.labMapVariant,0,16);
         GridPane.setConstraints(labels.txtMapVariant,1,16);
 
-        Button saveButton = new Button("Save changes");
+        //Button saveButton = new Button("Save changes");
         Button startButton = new Button("Start Simulation");
-        GridPane.setConstraints(saveButton, 1,17);
-        GridPane.setConstraints(startButton, 1,18);
+        //GridPane.setConstraints(saveButton, 1,17);
+        GridPane.setConstraints(startButton, 1,17);
 
 
-        saveButton.setOnAction(e -> {
+        startButton.setOnAction(e -> {
 
         //modyfikuję parameters.json zgodnie z ustawieniami
         FileReader reader = null;
@@ -141,6 +141,7 @@ public class App extends Application {
             file.flush();
             MainView mainView = new MainView(); //MainView z symulacją tworzymy po dopasowaniu parametrów w parameters.json
             simScene = new Scene(mainView, 640, 480);
+            stage.setScene(simScene);
 
         } catch (IOException eee) {
             eee.printStackTrace();
@@ -151,7 +152,7 @@ public class App extends Application {
         });
 
 
-        startButton.setOnAction(e -> stage.setScene(simScene)); //startButton uruchamia simScene - scenę z symulacją
+        //startButton.setOnAction(e -> stage.setScene(simScene)); //startButton uruchamia simScene - scenę z symulacją
 
         grid.getChildren().addAll(labels.labWidth,labels.txtWidth,labels.labHeight,labels.txtHeight, labels.labGrassStartNumber, labels.txtGrassStartNumber,
                 labels.labGrassEnergyProfit, labels.txtGrassEnergyProfit, labels.labGrassDailyGrowthNumber, labels.txtGrassDailyGrowthNumber, labels.labAnimalsStartNumber,
@@ -159,7 +160,7 @@ public class App extends Application {
                 labels.labCopulationMinimumEnergy,labels.txtCopulationMinimumEnergy, labels.labMakingChildCost,labels.txtMakingChildCost,labels.labMaxMutationCount,
                 labels.txtMaxMutationCount,labels.labMinMutationCount,labels.txtMinMutationCount,labels.labGenotypeLength,labels.txtGenotypeLength,labels.labBehaviour,
                 labels.txtBehaviour,labels.labMutationKind,labels.txtMutationKind,labels.labGrassGrowing, labels.txtGrassGrowing, labels.labMapVariant,labels.txtMapVariant,
-                saveButton,startButton);
+                startButton);
 
         paramsScene = new Scene(grid, 300, 700);
 
